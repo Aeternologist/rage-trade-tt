@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        /* Grays */
+        --gray-0: 0 0% 100%;
+        --gray-1: 0 0% 96%;
+        --gray-2: 236 23% 86%;
+        --gray-3: 234 24% 77%;
+        --gray-4: 233 24% 72%;
+        --gray-5: 234 24% 65%;
+        --gray-6: 234 24% 52%;
+        --gray-7: 234 25% 33%;
+        --gray-8: 234 24% 26%;
+        --gray-9: 233 25% 20%;
+        --gray-10: 234 24% 16%;
+        --gray-11: 233 25% 13%;
+        --gray-12: 231 25% 10%;
+        --gray-13: 233 22% 8%;
+
+        /* Secondary */
+        --secondary-0: 191 100% 86%;
+        --secondary-1: 29 100% 74%;
+        --secondary-2: 225 11% 86%;
+        --secondary-3: 16 62% 79%;
+        --secondary-4: 217 76% 73%;
+
+        /* Red */
+        --red-0: 0 88% 57%;
+        --red-1: 357 81% 57%;
+        --red-2: 0 100% 38%;
+        --red-3: 349 35% 19%;
+
+        /* Green */
+        --green-0: 156 87% 48%;
+        --green-1: 156 87% 43%;
+        --green-2: 160 74% 25%;
+        --green-3: 164 62% 18%;
+
+        /* Blue */
+        --blue-0: 204 87% 48%;
+        --blue-1: 207 82% 56%;
+        --blue-2: 216 100% 34%;
+        --blue-3: 214 45% 21%;
+
+        /* Gold */
+        --gold-0: 38 92% 50%;
+        --gold-1: 45 93% 47%;
+        --gold-2: 42 100% 36%;
+        --gold-3: 42 28% 19%;
+
+        /* Brand */
+        --brand-0: 249 90% 73%;
+        --brand-1: 264 100% 66%;
+        --brand-2: 270 100% 30%;
+        --brand-3: 261 100% 30%;
+
+        /* Text */
+        --text-primary: var(--gray-1);
+        --text-secondary: var(--gray-4);
+
+        /* Networks */
+        --ethereum: var(--gray-0);
+        --arbitrum: 204 87% 55%;
+        --optimism: 353 100% 51%;
+
+        color-scheme: light dark;
+        text-rendering: optimizeLegibility;
+
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-text-size-adjust: 100%;
+    }
+
+    html {
+        font-family: 'Poppins', serif;
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            background-color: #f8f8f8;
+            color: #181818;
+        }
+    }
+}

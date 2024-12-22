@@ -1,0 +1,44 @@
+{
+    "folders": [
+        {
+            "name": "🍰 app",
+            "path": "./src/app"
+        },
+        {
+            "name": "📕 pages",
+            "path": "./src/pages"
+        },
+        {
+            "name": "📊 widgets",
+            "path": "./src/widgets"
+        },
+        {
+            "name": "🛠️ features",
+            "path": "./src/features"
+        },
+        {
+            "name": "👥 entities",
+            "path": "./src/entities",
+        },
+        {
+            "name": "⚙️ shared",
+            "path": "./src/shared"
+        },
+        {
+            "path": ".",
+            "name": "root"
+        }
+    ],
+    "settings": {
+        "files.exclude": {
+            "*/app": true,
+            "*/pages": true,
+            "*/widgets": true,
+            "*/features": true,
+            "*/entities": true,
+            "*/shared": true,
+            ".vscode": true
+        },
+        "tailwindCSS.experimental.configFile": "./tailwind.config.ts"
+    }
+}
