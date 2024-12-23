@@ -22,24 +22,28 @@ type TokenDataSchema = z.infer<typeof TokenDataSchema>;
 
 const formatTokenData = (
     data: ContractReadResponse[],
-    chainId: SupportedChainsId,
+    contractAddressesInfo: {
+        chainId: SupportedChainsId;
+        address: Address;
+    }[],
 ) => {
-    const addresses = SUPPORTED_CONTRACTS_INFO[chainId].map((c) => c.address);
     const tokenData = TokenDataSchema.parse(data);
     const result = new Array<{
+        chainId: SupportedChainsId;
         address: Address;
         symbol: string;
         name: string;
         tokenBalance: string;
     }>();
     for (let i = 0; i < tokenData.length; i += 4) {
-        const address = addresses[i / 4];
+        const addressInfo = contractAddressesInfo[i / 4];
         const symbol = SymbolSchema.parse(tokenData[i].result);
         const name = NameSchema.parse(tokenData[i + 1].result);
         const balance = BalanceSchema.parse(tokenData[i + 2].result);
         const decimals = DecimalsSchema.parse(tokenData[i + 3].result);
         result.push({
-            address,
+            chainId: addressInfo.chainId,
+            address: addressInfo.address,
             symbol,
             name,
             tokenBalance: formatUnits(balance, decimals),
@@ -58,30 +62,37 @@ const getReadContractsPayload = (
             address: contract.address,
             functionName: 'symbol',
             chainId,
-        } satisfies ReadContractParameters<typeof erc20Abi, 'symbol'> & {chainId: SupportedChainsId};
+        } satisfies ReadContractParameters<typeof erc20Abi, 'symbol'> & {
+            chainId: SupportedChainsId;
+        };
 
         const nameReadContractParameters = {
             abi: contract.abi,
             address: contract.address,
             functionName: 'name',
-            chainId
-        } satisfies ReadContractParameters<typeof erc20Abi, 'name'> & {chainId: SupportedChainsId};
+            chainId,
+        } satisfies ReadContractParameters<typeof erc20Abi, 'name'> & {
+            chainId: SupportedChainsId;
+        };
 
         const balanceOfReadContractParameters = {
             abi: contract.abi,
             address: contract.address,
             functionName: 'balanceOf',
             args: [accountAddress],
-            chainId
-        } satisfies ReadContractParameters<typeof erc20Abi, 'balanceOf'>& {chainId: SupportedChainsId};
+            chainId,
+        } satisfies ReadContractParameters<typeof erc20Abi, 'balanceOf'> & {
+            chainId: SupportedChainsId;
+        };
 
         const decimalsReadContractParameters = {
             abi: contract.abi,
             address: contract.address,
             functionName: 'decimals',
-            chainId
-        } satisfies ReadContractParameters<typeof erc20Abi, 'decimals'>& {chainId: SupportedChainsId};
-
+            chainId,
+        } satisfies ReadContractParameters<typeof erc20Abi, 'decimals'> & {
+            chainId: SupportedChainsId;
+        };
         acc.push(
             symbolReadContractParameters,
             nameReadContractParameters,
@@ -93,16 +104,17 @@ const getReadContractsPayload = (
 };
 
 export const useReadSupportedContracts = ({
-    chainId,
+    chainIds,
     address,
 }: {
-    chainId: SupportedChainsId | undefined;
+    chainIds: SupportedChainsId[];
     address: `0x${string}` | undefined;
 }) => {
     const contracts =
-        chainId && address && getReadContractsPayload(chainId, address);
-
-        const kek = useReadContract({chainId: })
+        address &&
+        chainIds.flatMap((chainId) =>
+            getReadContractsPayload(chainId, address),
+        );
 
     const { data } = useReadContracts({
         contracts,
@@ -110,6 +122,13 @@ export const useReadSupportedContracts = ({
             enabled: !!contracts,
         },
     });
-    const accountTokensData = data && formatTokenData(data, chainId!);
+    const contractAddressesInfo = chainIds.flatMap((chainId) =>
+        SUPPORTED_CONTRACTS_INFO[chainId].map((c) => ({
+            chainId,
+            address: c.address,
+        })),
+    );
+    const accountTokensData =
+        data && formatTokenData(data, contractAddressesInfo);
     return accountTokensData;
 };

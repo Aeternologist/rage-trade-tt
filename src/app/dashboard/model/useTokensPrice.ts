@@ -1,36 +1,39 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQueries, useQuery } from '@tanstack/react-query';
+import type { Register } from 'wagmi';
 import {
     getPlatformAssetsQuery,
     getTokensPriceByAddressesQuery,
     getTokensPriceByIdsQuery,
 } from '@/entities/TokenDetails';
-import { type TokenId } from '@/shared/api';
+import { type TokenId, type TokenPriceByAddress } from '@/shared/api';
 import {
-    NATIVE_TOKENS_COINGECKO_ID,
+    NATIVE_CURRENCY_COINGECKO_ID,
     SUPPORTED_CONTRACTS_INFO,
     type SupportedChainsId,
 } from '@/shared/constants/supportedTokens';
 
-export const useTokensPrice = (chainId: SupportedChainsId | undefined) => {
+export const useTokensPrice = (chainIds: SupportedChainsId[]) => {
     const { data: assets } = useQuery(getPlatformAssetsQuery());
 
-    const nativeTokenId = chainId && NATIVE_TOKENS_COINGECKO_ID[chainId];
+    const tokenPricesArr = useQueries({
+        queries: chainIds.map((chainId) =>
+            getTokensPriceByAddressesQuery({
+                addresses: SUPPORTED_CONTRACTS_INFO[chainId]?.map(
+                    (c) => c.address,
+                ),
+                assetPlatformId: assets?.[chainId],
+                enabled: Boolean(assets),
+            }),
+        ),
+    });
 
-    const { data: nativeTokenData } = useQuery(
-        getTokensPriceByIdsQuery(nativeTokenId as TokenId),
+    const tokenPricesByChainId = tokenPricesArr.reduce(
+        (acc, tokenPrices, index) => {
+            acc[chainIds[index]] = tokenPrices.data;
+            return acc;
+        },
+        {} as Record<SupportedChainsId, TokenPriceByAddress | undefined>,
     );
 
-    const { data: tokenPrices } = useQuery(
-        getTokensPriceByAddressesQuery({
-            addresses: SUPPORTED_CONTRACTS_INFO[chainId!]?.map(
-                (c) => c.address,
-            ),
-            assetPlatformId: assets?.[chainId!],
-            enabled: Boolean(assets && chainId),
-        }),
-    );
-    return {
-        tokenPrices,
-        nativeTokenPrice: nativeTokenData?.[nativeTokenId as TokenId],
-    };
+    return tokenPricesByChainId;
 };

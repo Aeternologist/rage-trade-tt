@@ -1,6 +1,8 @@
 export {
+    getAccountBalancesQuery,
+    getTokenBalancesQuery,
     getTokensPriceByAddressesQuery,
     getPlatformAssetsQuery,
     getTokensPriceByIdsQuery,
     getTokenIdsQuery,
-} from './model/query';
+} from './model/queries';

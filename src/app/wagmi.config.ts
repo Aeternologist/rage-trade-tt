@@ -14,11 +14,20 @@ export function getConfig() {
             storage: cookieStorage,
         }),
         ssr: true,
+        pollingInterval: 30_000,
         transports: {
-            [mainnet.id]: http(),
-            [arbitrum.id]: http(),
-            [optimism.id]: http(),
-            [polygon.id]: http(),
+            [mainnet.id]: http(
+                `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`,
+            ),
+            [arbitrum.id]: http(
+                `https://arb-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`,
+            ),
+            [optimism.id]: http(
+                `https://opt-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`,
+            ),
+            [polygon.id]: http(
+                `https://polygon-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`,
+            ),
         },
     });
 }

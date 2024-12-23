@@ -8,8 +8,13 @@ import {
     getTokenPriceByAddresses,
     getTokenPriceByIds,
     type TokenPriceByIdSchema,
-    type TokenPriceByAddressSchema,
+    type TokenPriceByAddress,
+    getTokenBalances,
+    type TokenBalanceSchema,
+    getAccountBalances,
+    type AccountBalanceSchema,
 } from '@/shared/api';
+import { ALCHEMY_NETWORK_NAMES_BY_CHAIN_ID } from '@/shared/constants/alchemy';
 import {
     SUPPORTED_CHAIN_IDS,
     type SupportedChainsId,
@@ -20,6 +25,54 @@ import type { Address } from '@/shared/lib/zod';
 
 type PlatformAssetNameById = Record<SupportedChainsId, string>;
 type TokenByAddress = Record<Address, TokensSchema[number]>;
+type TokenBalanceByAddress = Record<Address, string>;
+
+export const getAccountBalancesQuery = ({
+    chainId,
+    accountAddr,
+}: {
+    chainId: SupportedChainsId;
+    accountAddr: Address;
+}) =>
+    ({
+        queryKey: [{ type: 'accountBalances', chainId }],
+        queryFn: () =>
+            getAccountBalances({
+                network: ALCHEMY_NETWORK_NAMES_BY_CHAIN_ID[chainId],
+                accountAddr,
+            }),
+        select: (data) => data.result,
+        enabled: Boolean(chainId && accountAddr),
+    }) satisfies UseQueryOptions<
+        AccountBalanceSchema,
+        Error,
+        AccountBalanceSchema['result']
+    >;
+
+export const getTokenBalancesQuery = ({
+    chainId,
+    accountAddr,
+}: {
+    chainId: SupportedChainsId;
+    accountAddr: Address;
+}) =>
+    ({
+        queryKey: [{ type: 'tokenBalances', chainId }],
+        queryFn: () =>
+            getTokenBalances({
+                network: ALCHEMY_NETWORK_NAMES_BY_CHAIN_ID[chainId],
+                accountAddr,
+                tokenAddr: SUPPORTED_CONTRACTS_INFO[chainId].map(
+                    (contract) => contract.address,
+                ),
+            }),
+        select: (data) => data.result.tokenBalances,
+        enabled: Boolean(chainId && accountAddr),
+    }) satisfies UseQueryOptions<
+        TokenBalanceSchema,
+        Error,
+        TokenBalanceSchema['result']['tokenBalances']
+    >;
 
 export const getPlatformAssetsQuery = () =>
     ({
@@ -91,9 +144,9 @@ export const getTokensPriceByAddressesQuery = ({
         staleTime: 1000 * 30,
         enabled: enabled,
     }) satisfies UseQueryOptions<
-        TokenPriceByAddressSchema,
+        TokenPriceByAddress,
         Error,
-        TokenPriceByAddressSchema
+        TokenPriceByAddress
     >;
 
 export const getTokensPriceByIdsQuery = (tokenIds: TokenId[] | TokenId) =>

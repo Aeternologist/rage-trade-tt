@@ -1,4 +1,5 @@
-import { z } from 'zod';
+import { error } from 'console';
+import { z, type ZodTypeAny } from 'zod';
 
 export const Address = z
     .string()
@@ -22,3 +23,24 @@ export const ContractReadResponse = z.discriminatedUnion('status', [
     ContractReadResponseError,
 ]);
 export type ContractReadResponse = z.infer<typeof ContractReadResponse>;
+
+export const AlchemyResponseSuccess = <S extends ZodTypeAny>(schema: S) =>
+    z.object({
+        jsonrpc: z.string(),
+        id: z.number(),
+        result: schema,
+        error: z.undefined(),
+    });
+
+export const AlchemyResponseError = z.object({
+    jsonrpc: z.string(),
+    id: z.number(),
+    result: z.undefined(),
+    error: z.object({
+        code: z.number(),
+        message: z.string(),
+    }),
+});
+
+export const AlchemyResponse = <S extends ZodTypeAny>(schema: S) =>
+    z.union([AlchemyResponseSuccess(schema), AlchemyResponseError]);

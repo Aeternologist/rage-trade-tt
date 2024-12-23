@@ -2,15 +2,13 @@ import { z } from 'zod';
 import { Address } from '../lib/zod';
 import { TokenId } from './getTokensIds';
 
-const TokenPriceByAddressSchema = z.record(
+const TokenPriceByAddress = z.record(
     Address,
     z.object({
         usd: z.number(),
     }),
 );
-export type TokenPriceByAddressSchema = z.infer<
-    typeof TokenPriceByAddressSchema
->;
+export type TokenPriceByAddress = z.infer<typeof TokenPriceByAddress>;
 
 const TokenPriceByIdSchema = z.record(
     TokenId,
@@ -40,4 +38,4 @@ export const getTokenPriceByAddresses = ({
         { method: 'GET', headers: { accept: 'application/json' } },
     )
         .then((res) => res.json())
-        .then((res) => TokenPriceByAddressSchema.parse(res));
+        .then((res) => TokenPriceByAddress.parse(res));

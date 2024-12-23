@@ -11,13 +11,11 @@ import { SUPPORTED_CONTRACTS_INFO } from '@/shared/constants/supportedTokens';
 import { useAccountTokensContext } from '../model/context';
 
 export const AccountInfo = () => {
-    const { chainId, isDisconnected } = useAccount();
+    const { chainId } = useAccount();
     const chains = useChains();
     const isWrongChain = chains.every(({ id }) => id !== chainId);
     const { totalBalance } = useAccountTokensContext();
-    useEffect(() => {
-        isDisconnected && redirect('/auth');
-    }, [isDisconnected]);
+
     return isWrongChain ? (
         <SwitchNetwork> Switch network</SwitchNetwork>
     ) : (

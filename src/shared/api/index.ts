@@ -1,7 +1,7 @@
 export {
     getTokenPriceByAddresses,
     getTokenPriceByIds,
-    type TokenPriceByAddressSchema,
+    type TokenPriceByAddress,
     type TokenPriceByIdSchema,
 } from './getTokensPrice';
 export {
@@ -9,3 +9,5 @@ export {
     type PlatformAssetsSchema,
 } from './getPlatformAssets';
 export { TokenId, TokensSchema, getTokenIds } from './getTokensIds';
+export { getTokenBalances, TokenBalanceSchema } from './getTokenBalances';
+export { getAccountBalances, AccountBalanceSchema } from './getBalance';

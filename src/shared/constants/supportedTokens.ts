@@ -157,7 +157,7 @@ export const SUPPORTED_CONTRACTS_INFO = {
     ],
 } as const satisfies Record<SupportedChainsId, SupportedChainContract[]>;
 
-export const NATIVE_TOKENS_COINGECKO_ID = {
+export const NATIVE_CURRENCY_COINGECKO_ID = {
     [mainnet.id]: 'ethereum',
     [arbitrum.id]: 'arbitrum',
     [optimism.id]: 'optimism',
