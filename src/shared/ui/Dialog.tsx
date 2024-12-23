@@ -9,8 +9,6 @@ import { cn } from '../lib/css';
 import { CloseIcon } from './CloseIcon';
 import { IconButton } from './IconButton';
 
-//TODO: разделить на root, trigger, content
-
 const Dialog = forwardRef<
     HTMLDialogElement,
     { children: ReactNode; className?: string }
