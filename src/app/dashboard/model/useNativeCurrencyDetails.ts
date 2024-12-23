@@ -33,10 +33,6 @@ export const useNativeCurrencyDetails = (
         ),
     });
 
-    console.log(
-        nativeCurrencyBalances.map((n) => formatUnits(BigInt(n.data || 0), 18)),
-    );
-
     const result = nativeCurrencyBalances.reduce(
         (acc, { data }, index) => {
             const chainId = chains[index].id;

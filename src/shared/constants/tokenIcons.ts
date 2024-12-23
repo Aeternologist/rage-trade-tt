@@ -1,6 +1,5 @@
 import type { ComponentType, SVGProps } from 'react';
 import {
-    ArbitrumIcon,
     BTCIcon,
     EthereumIcon,
     HyperliquidIcon,
