@@ -39,8 +39,13 @@ export const useNativeCurrencyDetails = (
 
     const result = nativeCurrencyBalances.reduce(
         (acc, { data }, index) => {
-            const currencyInfo = chains[index].nativeCurrency;
-            const currencyId = NATIVE_CURRENCY_COINGECKO_ID[chains[index].id];
+            const chainId = chains[index].id;
+            // if chain is arbitrum
+            const currencyInfo =
+                chainId === 42161
+                    ? { name: 'Arbitrum', symbol: 'ARB', decimals: 18 }
+                    : chains[index].nativeCurrency;
+            const currencyId = NATIVE_CURRENCY_COINGECKO_ID[chainId];
             const currencyBalance = formatUnits(
                 BigInt(data || '0x0'),
                 currencyInfo.decimals,
@@ -50,9 +55,10 @@ export const useNativeCurrencyDetails = (
                 nativeCurrencyPrices?.[currencyId as TokenId]?.usd || 0;
 
             const currencyDetails = {
-                chainId: chains[index].id,
+                chainId: chainId,
                 name: currencyInfo.name,
                 symbol: currencyInfo.symbol,
+                price: formatBalance(currencyPrice || 0, 2),
                 tokenBalance: currencyBalance,
                 usdBalance: formatBalance(
                     Number(currencyBalance) * currencyPrice,

@@ -9,7 +9,8 @@ export type TokenDetails = {
     chainId: SupportedChainsId;
     name?: string;
     symbol?: string;
-    tokenBalance?: string | number;
+    price: number;
+    tokenBalance?: string;
     usdBalance: number;
 };
 

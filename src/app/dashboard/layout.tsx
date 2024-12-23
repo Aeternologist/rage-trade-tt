@@ -17,7 +17,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                 <Logo />
                 <AccountInfo></AccountInfo>
             </Header>
-            <main className="m-2 flex flex-col rounded border border-gray-10 px-4 py-6">
+            <main className="m-2 flex flex-col rounded border border-gray-10">
                 {children}
             </main>
         </DashboardProvider>

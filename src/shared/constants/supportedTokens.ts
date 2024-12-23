@@ -1,6 +1,5 @@
 import {
     erc20Abi,
-    type ContractFunctionParameters,
     type ReadContractParameters,
     type RequiredBy,
 } from 'viem';
@@ -22,7 +21,7 @@ export const SupportedTokens = z.enum([
 export type SupportedTokens = z.infer<typeof SupportedTokens>;
 
 export const SUPPORTED_CHAIN_IDS = [
-    1, 42161, 10, 137,
+    1, 42161, 10,
 ] satisfies Register['config']['chains'][number]['id'][];
 export type SupportedChainsId = (typeof SUPPORTED_CHAIN_IDS)[number];
 
@@ -143,25 +142,12 @@ export const SUPPORTED_CONTRACTS_INFO = {
             abi: erc20Abi,
         },
     ],
-    [polygon.id]: [
-        {
-            name: 'USDT',
-            address: '0xc2132D05D31c914a87C6611C10748AEb04B58e8F',
-            abi: erc20Abi,
-        },
-        {
-            name: 'ARB',
-            address: '0x7E4c577ca35913af564ee2a24d882a4946Ec492B',
-            abi: erc20Abi,
-        },
-    ],
 } as const satisfies Record<SupportedChainsId, SupportedChainContract[]>;
 
 export const NATIVE_CURRENCY_COINGECKO_ID = {
     [mainnet.id]: 'ethereum',
     [arbitrum.id]: 'arbitrum',
     [optimism.id]: 'optimism',
-    [polygon.id]: 'matic-network',
 } as const satisfies Record<SupportedChainsId, string>;
 
 export const SUPPORTED_ADDRESSES_SET = Object.values(

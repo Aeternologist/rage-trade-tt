@@ -1,10 +1,10 @@
 import { http, cookieStorage, createConfig, createStorage } from 'wagmi';
-import { arbitrum, optimism, mainnet, polygon } from 'wagmi/chains';
+import { arbitrum, optimism, mainnet } from 'wagmi/chains';
 import { walletConnect } from 'wagmi/connectors';
 
 export function getConfig() {
     return createConfig({
-        chains: [mainnet, arbitrum, optimism, polygon],
+        chains: [mainnet, arbitrum, optimism],
         connectors: [
             walletConnect({
                 projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID,
@@ -25,9 +25,9 @@ export function getConfig() {
             [optimism.id]: http(
                 `https://opt-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`,
             ),
-            [polygon.id]: http(
+            /*             [polygon.id]: http(
                 `https://polygon-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`,
-            ),
+            ), */
         },
     });
 }

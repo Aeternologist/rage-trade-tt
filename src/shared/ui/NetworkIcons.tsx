@@ -1,12 +1,14 @@
-export const ArbitrumIcon = ({ className }: { className?: string }) => {
+import type { SVGProps } from 'react';
+
+export const ArbitrumNetworkIcon = (props: SVGProps<SVGSVGElement>) => {
     return (
         <svg
-            className={className}
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="25"
             viewBox="0 0 24 25"
             fill="none"
+            {...props}
         >
             <g clipPath="url(#clip0_77_2118)">
                 <g filter="url(#filter0_b_77_2118)">
@@ -80,15 +82,15 @@ export const ArbitrumIcon = ({ className }: { className?: string }) => {
     );
 };
 
-export const OptimismIcon = ({ className }: { className?: string }) => {
+export const OptimismNetworkIcon = (props: SVGProps<SVGSVGElement>) => {
     return (
         <svg
-            className={className}
             xmlns="http://www.w3.org/2000/svg"
             width="25"
             height="25"
             viewBox="0 0 25 25"
             fill="none"
+            {...props}
         >
             <rect
                 x="0.333252"
@@ -111,15 +113,15 @@ export const OptimismIcon = ({ className }: { className?: string }) => {
         </svg>
     );
 };
-export const EthereumIcon = ({ className }: { className?: string }) => {
+export const EthereumNetworkIcon = (props: SVGProps<SVGSVGElement>) => {
     return (
         <svg
-            className={className}
             xmlns="http://www.w3.org/2000/svg"
             width="26"
             height="25"
             viewBox="0 0 26 25"
             fill="none"
+            {...props}
         >
             <rect
                 x="0.833496"

@@ -1,11 +1,19 @@
 'use client';
 
 import Image from 'next/image';
+import type { ReactNode } from 'react';
 import { useAccount } from 'wagmi';
-import { Button } from '@/shared/ui/Button';
+import { Button, type ButtonProps } from '@/shared/ui/Button';
 import { DefaultWalletIcon } from '@/shared/ui/WalletIcons';
 
-export const Profile = ({ balance }: { balance: string }) => {
+export const Profile = ({
+    compact,
+    children,
+    ...props
+}: {
+    compact?: boolean;
+    children: ReactNode;
+} & ButtonProps) => {
     const { chain, connector, address: accountAddress } = useAccount();
 
     return (
@@ -23,8 +31,14 @@ export const Profile = ({ balance }: { balance: string }) => {
                     <DefaultWalletIcon />
                 )
             }
+            {...props}
         >
-            {balance}
+            {!compact && (
+                <span className="text-xs font-semibold text-secondary">
+                    {connector?.name}
+                </span>
+            )}
+            {children}
         </Button>
     );
 };

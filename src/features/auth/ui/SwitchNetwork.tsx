@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { useAccount, useChainId, useSwitchChain } from 'wagmi';
+import { useAccount, useSwitchChain } from 'wagmi';
 import { NetworkButton } from '@/entities/NetworkButton';
 import { Button, type ButtonProps } from '@/shared/ui/Button';
 import { Dialog } from '@/shared/ui/Dialog';

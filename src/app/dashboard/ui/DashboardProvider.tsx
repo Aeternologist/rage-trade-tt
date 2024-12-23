@@ -34,7 +34,6 @@ export const DashboardProvider = ({ children }: { children: ReactNode }) => {
             address,
         );
 
-
     const accountBalancesInfo = accountTokensData?.reduce<{
         tokenDetails: TokenDetails[];
         totalBalance: number;
@@ -51,6 +50,7 @@ export const DashboardProvider = ({ children }: { children: ReactNode }) => {
                 chainId: token.chainId,
                 name: token.name,
                 symbol: token.symbol,
+                price: formatBalance(tokenPrice || 0, 2),
                 tokenBalance: token.tokenBalance,
                 usdBalance: usdBalance || 0,
             });
