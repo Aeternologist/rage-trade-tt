@@ -7,7 +7,7 @@ import { DashboardWalletsPanel } from './ui/DashBoardWalletsPanel';
 import { DashboardProvider } from './ui/DashboardProvider';
 
 export const metadata: Metadata = {
-    title: 'Rage trade Auth',
+    title: 'Rage trade',
     description: 'Rage Trade | Technical Task',
 };
 
