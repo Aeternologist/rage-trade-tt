@@ -1,23 +1,20 @@
 'use client';
 
-import { useQueries } from '@tanstack/react-query';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, type ReactNode } from 'react';
-import { formatUnits } from 'viem';
-import { useAccount, useBalance, useChains, type Register } from 'wagmi';
+import { useAccount, useChains, type Register } from 'wagmi';
 import { AccountTokensContextProvider } from '@/widgets/AccountInfo';
 import type { TokenDetails } from '@/widgets/AccountInfo/model/context';
-import { getTokenBalancesQuery } from '@/entities/TokenDetails';
 import type { SupportedChainsId } from '@/shared/constants/supportedTokens';
 import { formatBalance } from '@/shared/lib/react';
 import { useNativeCurrencyDetails } from '../model/useNativeCurrencyDetails';
 import { useReadSupportedContracts } from '../model/useReadSupportedContracts';
 import { useTokensPrice } from '../model/useTokensPrice';
 
-
 export const DashboardProvider = ({ children }: { children: ReactNode }) => {
     const { chain, connector, address, isDisconnected } = useAccount();
     const chains = useChains();
+    const router = useRouter();
 
     const accountTokensData = useReadSupportedContracts({
         chainIds: chains.map((chain) => chain.id) as SupportedChainsId[],
@@ -64,7 +61,7 @@ export const DashboardProvider = ({ children }: { children: ReactNode }) => {
     );
 
     useEffect(() => {
-        isDisconnected && redirect('/auth');
+        isDisconnected && router.push('/auth');
     }, [isDisconnected]);
 
     return accountBalancesInfo ? (

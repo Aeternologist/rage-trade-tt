@@ -103,8 +103,8 @@ const WordmarkIcon = ({ className }: { className?: string }) => {
                     y2="71.3872"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#70FFDE" />
-                    <stop offset="1" stop-color="#9852FF" />
+                    <stop stopColor="#70FFDE" />
+                    <stop offset="1" stopColor="#9852FF" />
                 </linearGradient>
                 <linearGradient
                     id="paint1_linear_56_525"
@@ -114,8 +114,8 @@ const WordmarkIcon = ({ className }: { className?: string }) => {
                     y2="71.3873"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#70FFDE" />
-                    <stop offset="1" stop-color="#9852FF" />
+                    <stop stopColor="#70FFDE" />
+                    <stop offset="1" stopColor="#9852FF" />
                 </linearGradient>
                 <linearGradient
                     id="paint2_linear_56_525"
@@ -125,8 +125,8 @@ const WordmarkIcon = ({ className }: { className?: string }) => {
                     y2="71.3873"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#70FFDE" />
-                    <stop offset="1" stop-color="#9852FF" />
+                    <stop stopColor="#70FFDE" />
+                    <stop offset="1" stopColor="#9852FF" />
                 </linearGradient>
                 <linearGradient
                     id="paint3_linear_56_525"
@@ -136,8 +136,8 @@ const WordmarkIcon = ({ className }: { className?: string }) => {
                     y2="71.3872"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#70FFDE" />
-                    <stop offset="1" stop-color="#9852FF" />
+                    <stop stopColor="#70FFDE" />
+                    <stop offset="1" stopColor="#9852FF" />
                 </linearGradient>
                 <linearGradient
                     id="paint4_linear_56_525"
@@ -147,8 +147,8 @@ const WordmarkIcon = ({ className }: { className?: string }) => {
                     y2="71.3872"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#70FFDE" />
-                    <stop offset="1" stop-color="#9852FF" />
+                    <stop stopColor="#70FFDE" />
+                    <stop offset="1" stopColor="#9852FF" />
                 </linearGradient>
                 <linearGradient
                     id="paint5_linear_56_525"
@@ -158,8 +158,8 @@ const WordmarkIcon = ({ className }: { className?: string }) => {
                     y2="71.3872"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#70FFDE" />
-                    <stop offset="1" stop-color="#9852FF" />
+                    <stop stopColor="#70FFDE" />
+                    <stop offset="1" stopColor="#9852FF" />
                 </linearGradient>
                 <linearGradient
                     id="paint6_linear_56_525"
@@ -169,8 +169,8 @@ const WordmarkIcon = ({ className }: { className?: string }) => {
                     y2="71.3873"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#70FFDE" />
-                    <stop offset="1" stop-color="#9852FF" />
+                    <stop stopColor="#70FFDE" />
+                    <stop offset="1" stopColor="#9852FF" />
                 </linearGradient>
                 <linearGradient
                     id="paint7_linear_56_525"
@@ -180,8 +180,8 @@ const WordmarkIcon = ({ className }: { className?: string }) => {
                     y2="71.3872"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#70FFDE" />
-                    <stop offset="1" stop-color="#9852FF" />
+                    <stop stopColor="#70FFDE" />
+                    <stop offset="1" stopColor="#9852FF" />
                 </linearGradient>
                 <linearGradient
                     id="paint8_linear_56_525"
@@ -191,8 +191,8 @@ const WordmarkIcon = ({ className }: { className?: string }) => {
                     y2="71.3873"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#70FFDE" />
-                    <stop offset="1" stop-color="#9852FF" />
+                    <stop stopColor="#70FFDE" />
+                    <stop offset="1" stopColor="#9852FF" />
                 </linearGradient>
             </defs>
         </svg>

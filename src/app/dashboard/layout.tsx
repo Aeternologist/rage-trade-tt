@@ -3,6 +3,7 @@ import { type ReactNode } from 'react';
 import { AccountInfo } from '@/widgets/AccountInfo';
 import { Header } from '@/shared/ui/Header';
 import { Logo } from '@/shared/ui/Logo';
+import { DashboardWalletsPanel } from './ui/DashBoardWalletsPanel';
 import { DashboardProvider } from './ui/DashboardProvider';
 
 export const metadata: Metadata = {
@@ -18,7 +19,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                 <AccountInfo></AccountInfo>
             </Header>
             <main className="m-2 flex flex-col rounded border border-gray-10">
-                {children}
+                <DashboardWalletsPanel>{children}</DashboardWalletsPanel>
             </main>
         </DashboardProvider>
     );

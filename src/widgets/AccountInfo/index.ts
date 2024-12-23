@@ -4,3 +4,4 @@ export {
     useAccountTokensContext,
     accountTokensContext,
 } from './model/context';
+export { WalletsPanel } from './ui/WalletsPanel';
