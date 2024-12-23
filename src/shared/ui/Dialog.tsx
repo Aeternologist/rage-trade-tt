@@ -25,7 +25,7 @@ const Dialog = forwardRef<
         <dialog
             ref={ref}
             className={cn(
-                'w-[336px] rounded border-0.5 border-gray-10 bg-gray-13/90 backdrop:bg-black/30 backdrop:backdrop-blur-[7.5px]',
+                'starting:open:opacity-0 backdrop:transition-discrete open:scale-y-1 starting:scale-y-0 w-[336px] rounded border-0.5 border-gray-10 bg-gray-13/90 backdrop:bg-black/30 backdrop:backdrop-blur-[7.5px] backdrop:transition-[opacity,overlay,display,background-color] open:opacity-100',
 
                 className,
             )}
