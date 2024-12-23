@@ -10,7 +10,7 @@ const secret = process.env.NEXTAUTH_SECRET;
 if (!secret || secret === 'session-secret')
     console.warn('\n\n🚨 No NEXTAUTH_SECRET set, the app is insecure\n\n');
 
-export const authOptions: AuthOptions = {
+const authOptions: AuthOptions = {
     providers: [
         CredentialsProvider({
             id: 'web3',
