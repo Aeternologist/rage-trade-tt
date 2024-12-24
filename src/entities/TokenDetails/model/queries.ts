@@ -1,4 +1,4 @@
-import type { UseQueryOptions } from '@tanstack/react-query';
+import { queryOptions, type UseQueryOptions } from '@tanstack/react-query';
 import {
     getPlatformAssets,
     getTokenIds,
@@ -13,6 +13,8 @@ import {
     type TokenBalanceSchema,
     getAccountBalances,
     type AccountBalanceSchema,
+    getTokenMetadata,
+    type TokenMetadata,
 } from '@/shared/api';
 import { ALCHEMY_NETWORK_NAMES_BY_CHAIN_ID } from '@/shared/constants/alchemy';
 import {
@@ -22,10 +24,37 @@ import {
     SUPPORTED_ADDRESSES_SET,
 } from '@/shared/constants/supportedTokens';
 import type { Address } from '@/shared/lib/zod';
+import type { TokenMetadataKey } from './localStore';
 
 type PlatformAssetNameById = Record<SupportedChainsId, string>;
 type TokenByAddress = Record<Address, TokensSchema[number]>;
 type TokenBalanceByAddress = Record<Address, string>;
+
+export const getTokenMetadataQuery = ({
+    chainId,
+    tokenAddr,
+    initialData,
+}: {
+    chainId: SupportedChainsId;
+    tokenAddr: Address;
+    initialData: TokenMetadata['result'] | void;
+}) =>
+    queryOptions({
+        queryKey: [{ type: 'tokenMetadata', chainId, tokenAddr }],
+        queryFn: () =>
+            getTokenMetadata({
+                network: ALCHEMY_NETWORK_NAMES_BY_CHAIN_ID[chainId],
+                tokenAddr,
+            }),
+        select: (data) =>
+            data && {
+                cacheKey: `${chainId}-${tokenAddr}` satisfies TokenMetadataKey,
+                ...data,
+            },
+        enabled: Boolean(chainId && tokenAddr),
+        staleTime: Infinity,
+        initialData: initialData,
+    });
 
 export const getAccountBalancesQuery = ({
     chainId,
@@ -35,7 +64,7 @@ export const getAccountBalancesQuery = ({
     accountAddr: Address;
 }) =>
     ({
-        queryKey: [{ type: 'accountBalances', chainId }],
+        queryKey: [{ type: 'accountBalances', chainId, accountAddr }],
         queryFn: () =>
             getAccountBalances({
                 network: ALCHEMY_NETWORK_NAMES_BY_CHAIN_ID[chainId],
@@ -57,7 +86,7 @@ export const getTokenBalancesQuery = ({
     accountAddr: Address;
 }) =>
     ({
-        queryKey: [{ type: 'tokenBalances', chainId }],
+        queryKey: [{ type: 'tokenBalances', chainId, accountAddr }],
         queryFn: () =>
             getTokenBalances({
                 network: ALCHEMY_NETWORK_NAMES_BY_CHAIN_ID[chainId],

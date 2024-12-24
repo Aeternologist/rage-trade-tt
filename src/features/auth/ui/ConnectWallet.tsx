@@ -7,6 +7,7 @@ import { Dialog } from '@/shared/ui/Dialog';
 import { ConnectorButton } from './ConnectorButton';
 import { useSignIn } from './useSignIn';
 
+
 export const ConnectWallet = (props: ButtonProps) => {
     const { connectors, connectAsync, status, error } = useConnect();
     const account = useAccount();
@@ -15,6 +16,8 @@ export const ConnectWallet = (props: ButtonProps) => {
         dialogRef.current?.showModal();
     };
     const signIn = useSignIn();
+
+
 
     return (
         <>

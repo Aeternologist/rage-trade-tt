@@ -3,7 +3,7 @@ import type { AlchemyNetworkName } from '../constants/alchemy';
 import { Address, AlchemyResponse, AlchemyResponseSuccess } from '../lib/zod';
 import { PlatformName } from './getPlatformAssets';
 
-export const TokenMetadataSchema = AlchemyResponseSuccess(
+export const TokenMetadata = AlchemyResponseSuccess(
     z.object({
         decimals: z.number().nullable(),
         logo: z.string().nullable(),
@@ -11,14 +11,14 @@ export const TokenMetadataSchema = AlchemyResponseSuccess(
         symbol: z.string().nullable(),
     }),
 );
-export type TokenMetadataSchema = z.infer<typeof TokenMetadataSchema>;
+export type TokenMetadata = z.infer<typeof TokenMetadata>;
 
-export const getTokenBalances = ({
+export const getTokenMetadata = ({
     network,
     tokenAddr,
 }: {
     network: AlchemyNetworkName;
-    tokenAddr: Address[];
+    tokenAddr: Address;
 }) =>
     fetch(
         `https://${network}.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`,
@@ -30,11 +30,11 @@ export const getTokenBalances = ({
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                params: tokenAddr,
+                params: [tokenAddr],
                 id: 1,
             }),
             redirect: 'follow',
         },
     )
         .then((res) => res.json())
-        .then((res) => TokenMetadataSchema.parse(res));
+        .then((res) => TokenMetadata.parse(res).result);

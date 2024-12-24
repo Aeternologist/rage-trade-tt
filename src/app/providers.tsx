@@ -3,6 +3,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { type ReactNode, useState } from 'react';
 import { type State, WagmiProvider } from 'wagmi';
+import './localforage.config';
 import AuthProvider from './providers/AuthProvider';
 import { getConfig } from './wagmi.config';
 

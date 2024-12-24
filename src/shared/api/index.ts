@@ -11,3 +11,4 @@ export {
 export { TokenId, TokensSchema, getTokenIds } from './getTokensIds';
 export { getTokenBalances, TokenBalanceSchema } from './getTokenBalances';
 export { getAccountBalances, AccountBalanceSchema } from './getBalance';
+export { getTokenMetadata, TokenMetadata } from './getTokenMetadata';
