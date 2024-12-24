@@ -3,10 +3,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect, type ReactNode } from 'react';
+import { formatUnits } from 'viem';
 import { useAccount, useChains, type Register } from 'wagmi';
 import { AccountTokensContextProvider } from '@/widgets/AccountInfo';
 import type { TokenDetails } from '@/widgets/AccountInfo/model/context';
-import { tokensMetadataLocalStore } from '@/entities/TokenDetails';
+import type { TokenMetadataKey } from '@/entities/TokenDetails/model/localStore';
 import { getTokenMetadataQuery } from '@/entities/TokenDetails/model/queries';
 import type { SupportedChainsId } from '@/shared/constants/supportedTokens';
 import { formatBalance } from '@/shared/lib/react';
@@ -20,7 +21,7 @@ export const DashboardProvider = ({ children }: { children: ReactNode }) => {
     const chains = useChains();
     const router = useRouter();
     const chainIds = chains.map((chain) => chain.id) as SupportedChainsId[];
-    const tokensMetadata = useTokensMetadata(chainIds);
+    const { tokensMetadata, getLogoBySymbol } = useTokensMetadata(chainIds);
 
     const accountTokensData = useReadSupportedContracts({
         chainIds,
@@ -47,12 +48,22 @@ export const DashboardProvider = ({ children }: { children: ReactNode }) => {
                 ? formatBalance(Number(token.tokenBalance) * tokenPrice, 2)
                 : 0;
 
+            const tokenMetadataKey =
+                `${token.chainId}-${token.address}` satisfies TokenMetadataKey;
+            const tokenMetadata = tokensMetadata[tokenMetadataKey];
+
             acc.tokenDetails.push({
                 chainId: token.chainId,
-                name: token.name,
-                symbol: token.symbol,
+                name: tokenMetadata?.name || '',
+                symbol: tokenMetadata?.symbol || '',
+                logo:
+                    tokenMetadata?.logo ||
+                    getLogoBySymbol(tokenMetadata?.symbol),
                 price: formatBalance(tokenPrice || 0, 2),
-                tokenBalance: token.tokenBalance,
+                tokenBalance: formatUnits(
+                    token.tokenBalance,
+                    tokenMetadata?.decimals || 18,
+                ),
                 usdBalance: usdBalance || 0,
             });
             acc.totalBalance += usdBalance;

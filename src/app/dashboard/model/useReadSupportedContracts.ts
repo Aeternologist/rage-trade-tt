@@ -12,10 +12,7 @@ import {
     type ContractReadResponse,
 } from '@/shared/lib/zod';
 
-const SymbolSchema = z.string();
-const NameSchema = z.string();
 const BalanceSchema = z.bigint();
-const DecimalsSchema = z.number().int();
 
 const TokenDataSchema = ContractReadResponseSuccess.array();
 type TokenDataSchema = z.infer<typeof TokenDataSchema>;
@@ -28,79 +25,35 @@ const formatTokenData = (
     }[],
 ) => {
     const tokenData = TokenDataSchema.parse(data);
-    const result = new Array<{
-        chainId: SupportedChainsId;
-        address: Address;
-        symbol: string;
-        name: string;
-        tokenBalance: string;
-    }>();
-    for (let i = 0; i < tokenData.length; i += 4) {
-        const addressInfo = contractAddressesInfo[i / 4];
-        const symbol = SymbolSchema.parse(tokenData[i].result);
-        const name = NameSchema.parse(tokenData[i + 1].result);
-        const balance = BalanceSchema.parse(tokenData[i + 2].result);
-        const decimals = DecimalsSchema.parse(tokenData[i + 3].result);
-        result.push({
-            chainId: addressInfo.chainId,
-            address: addressInfo.address,
-            symbol,
-            name,
-            tokenBalance: formatUnits(balance, decimals),
-        });
-    }
-    return result;
+    return tokenData.map(({ result }, i) => {
+        const contractInfo = contractAddressesInfo[i];
+        return {
+            chainId: contractInfo.chainId,
+            address: contractInfo.address,
+            tokenBalance: BalanceSchema.parse(result),
+        };
+    });
 };
 
 const getReadContractsPayload = (
     chainId: SupportedChainsId,
     accountAddress: `0x${string}`,
 ) => {
-    return SUPPORTED_CONTRACTS_INFO[chainId].reduce((acc, contract) => {
-        const symbolReadContractParameters = {
-            abi: contract.abi,
-            address: contract.address,
-            functionName: 'symbol',
-            chainId,
-        } satisfies ReadContractParameters<typeof erc20Abi, 'symbol'> & {
-            chainId: SupportedChainsId;
-        };
-
-        const nameReadContractParameters = {
-            abi: contract.abi,
-            address: contract.address,
-            functionName: 'name',
-            chainId,
-        } satisfies ReadContractParameters<typeof erc20Abi, 'name'> & {
-            chainId: SupportedChainsId;
-        };
-
-        const balanceOfReadContractParameters = {
-            abi: contract.abi,
-            address: contract.address,
-            functionName: 'balanceOf',
-            args: [accountAddress],
-            chainId,
-        } satisfies ReadContractParameters<typeof erc20Abi, 'balanceOf'> & {
-            chainId: SupportedChainsId;
-        };
-
-        const decimalsReadContractParameters = {
-            abi: contract.abi,
-            address: contract.address,
-            functionName: 'decimals',
-            chainId,
-        } satisfies ReadContractParameters<typeof erc20Abi, 'decimals'> & {
-            chainId: SupportedChainsId;
-        };
-        acc.push(
-            symbolReadContractParameters,
-            nameReadContractParameters,
-            balanceOfReadContractParameters,
-            decimalsReadContractParameters,
-        );
-        return acc;
-    }, new Array<ReadContractParameters<typeof erc20Abi, 'symbol' | 'balanceOf' | 'decimals' | 'name'>>());
+    return SUPPORTED_CONTRACTS_INFO[chainId].map(
+        (contract) =>
+            ({
+                abi: contract.abi,
+                address: contract.address,
+                functionName: 'balanceOf',
+                args: [accountAddress],
+                chainId,
+            }) satisfies ReadContractParameters<
+                typeof erc20Abi,
+                'balanceOf'
+            > & {
+                chainId: SupportedChainsId;
+            },
+    );
 };
 
 export const useReadSupportedContracts = ({

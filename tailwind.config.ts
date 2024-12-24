@@ -53,6 +53,7 @@ const config = {
                 /* Text */
                 primary: 'hsl(var(--text-primary))',
                 secondary: 'hsl(var(--text-secondary))',
+                quaternary: 'hsl(var(--text-quaternary))',
 
                 /* Networks */
                 ethereum: 'hsl(var(--ethereum))',
@@ -61,11 +62,6 @@ const config = {
             },
             fontSize: {
                 xxs: ['0.625rem', '0.875rem'],
-            },
-            borderRadius: {
-                lg: 'var(--radius)',
-                md: 'calc(var(--radius) - 2px)',
-                sm: 'calc(var(--radius) - 4px)',
             },
         },
     },

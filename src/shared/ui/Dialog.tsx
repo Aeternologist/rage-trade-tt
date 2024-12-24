@@ -11,8 +11,8 @@ import { IconButton } from './IconButton';
 
 const Dialog = forwardRef<
     HTMLDialogElement,
-    { children: ReactNode; className?: string }
->(({ children, className }, ref) => {
+    { children: ReactNode; dialogClassName?: string; className?: string }
+>(({ children, dialogClassName, className }, ref) => {
     const dialogFormId = useId();
     const dialogElement = (ref as RefObject<HTMLDialogElement> | undefined)
         ?.current;
@@ -25,9 +25,9 @@ const Dialog = forwardRef<
         <dialog
             ref={ref}
             className={cn(
-                'starting:open:opacity-0 backdrop:transition-discrete open:scale-y-1 starting:scale-y-0 w-[336px] rounded border-0.5 border-gray-10 bg-gray-13/90 backdrop:bg-black/30 backdrop:backdrop-blur-[7.5px] backdrop:transition-[opacity,overlay,display,background-color] open:opacity-100',
+                'open:scale-y-1 rounded border-0.5 border-gray-10 bg-gray-13/90 backdrop:bg-black/30 backdrop:backdrop-blur-[7.5px] backdrop:transition-[opacity,overlay,display,background-color] backdrop:transition-discrete open:opacity-100 starting:scale-y-0 starting:open:opacity-0',
 
-                className,
+                dialogClassName,
             )}
             onClick={handleCloseModal}
         >
@@ -42,7 +42,7 @@ const Dialog = forwardRef<
             </IconButton>
             <form
                 id={dialogFormId}
-                className="place-items-start p-3"
+                className={cn('w-[336px] place-items-start p-3', className)}
                 method="dialog"
             >
                 {children}

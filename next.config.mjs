@@ -5,17 +5,13 @@
  */
 const nextConfig = {
     reactStrictMode: true,
+     trailingSlash: true,
     webpack: (config) => {
         config.externals.push('pino-pretty', 'lokijs', 'encoding');
         return config;
     },
     async redirects() {
         return [
-            {
-                source: '/dashboard',
-                destination: '/dashboard/wallet-assets',
-                permanent: true,
-            },
             {
                 source: '/',
                 destination: '/auth',

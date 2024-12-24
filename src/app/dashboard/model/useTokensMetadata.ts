@@ -73,5 +73,11 @@ export const useTokensMetadata = (chainIds: SupportedChainsId[]) => {
             tokensMetadataLocalStore.setItem('tokenMetadata', tokensMetadata);
         }
     }, [queriesData]);
-    return tokensMetadata;
+
+    const getLogoBySymbol = (symbol: string | null | undefined) =>
+        (symbol &&
+            queriesData.find(({ data }) => data?.symbol === symbol && data.logo)
+                ?.data?.logo) ||
+        undefined;
+    return { tokensMetadata, getLogoBySymbol };
 };

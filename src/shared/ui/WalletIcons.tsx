@@ -1,7 +1,13 @@
 import { Wallet } from 'solar-icon-set';
 
-export const DefaultWalletIcon = ({ className }: { className?: string }) => {
-    return <Wallet iconStyle="BoldDuotone" size={24} />;
+export const DefaultWalletIcon = ({
+    className,
+    size,
+}: {
+    className?: string;
+    size?: number;
+}) => {
+    return <Wallet className={className} iconStyle="BoldDuotone" size={size} />;
 };
 
 export const WalletConnectIcon = ({ className }: { className?: string }) => {

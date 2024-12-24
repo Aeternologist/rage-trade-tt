@@ -4,6 +4,7 @@ import Image from 'next/image';
 import type { ReactNode } from 'react';
 import { useAccount } from 'wagmi';
 import { Button, type ButtonProps } from '@/shared/ui/Button';
+import { WalletIcon } from '@/shared/ui/WalletIcon';
 import { DefaultWalletIcon } from '@/shared/ui/WalletIcons';
 
 export const Profile = ({
@@ -19,17 +20,11 @@ export const Profile = ({
     return (
         <Button
             leftIcon={
-                connector?.icon ? (
-                    <Image
-                        className="rounded-sm"
-                        src={connector?.icon}
-                        width={16}
-                        height={16}
-                        alt={connector.name}
-                    />
-                ) : (
-                    <DefaultWalletIcon />
-                )
+                <WalletIcon
+                    src={connector?.icon}
+                    alt={connector?.name}
+                    size={16}
+                />
             }
             {...props}
         >

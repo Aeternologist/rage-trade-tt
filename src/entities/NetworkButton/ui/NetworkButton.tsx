@@ -19,7 +19,7 @@ export const NetworkButton = ({
     return (
         <Button
             className={cn(
-                'border border-gray-10 bg-gray-12 aria-checked:pointer-events-none hover:[&:not(:disabled)]:bg-gray-10/50',
+                'border border-gray-10 gap-x-1 px-2 bg-gray-12 aria-checked:pointer-events-none hover:[&:not(:disabled)]:bg-gray-10/50',
                 className,
             )}
             variant="secondary"

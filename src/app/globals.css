@@ -61,6 +61,7 @@
         /* Text */
         --text-primary: var(--gray-1);
         --text-secondary: var(--gray-4);
+        --text-quaternary: 0 0% 25%;
 
         /* Networks */
         --ethereum: var(--gray-0);

@@ -1,3 +1,5 @@
+'use client;';
+
 import localforage from 'localforage';
 import { z } from 'zod';
 
@@ -38,7 +40,7 @@ export class LocalForageStore<T extends ReturnType<typeof z.object>> {
                 return this.schema.shape[key].parse(value) as z.infer<T>[K];
             })
             .catch((e) => {
-                console.log(e)
+                console.log(e);
                 this.clear();
                 return undefined;
             });

@@ -22,7 +22,6 @@ export const TokenTable = ({
                     <TableHead>Assets</TableHead>
                     <TableHead>Amount</TableHead>
                     <TableHead>Price</TableHead>
-                    <TableHead className="text-right">Amount</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
@@ -31,7 +30,8 @@ export const TokenTable = ({
                         <TableCell className="grid grid-cols-[min-content_1fr] grid-rows-2 items-center gap-x-3 font-semibold">
                             <AssetIcon
                                 className="row-span-full"
-                                symbol={token.symbol || ''}
+                                symbol={token.symbol}
+                                logo={token.logo}
                                 chainId={token.chainId}
                             />
                             {token.symbol}

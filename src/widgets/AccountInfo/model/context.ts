@@ -1,16 +1,21 @@
 'use client';
 
-import { useContext, createContext } from 'use-context-selector';
+import {
+    useContext,
+    createContext,
+    useContextSelector,
+} from 'use-context-selector';
 import type { SupportedChainsId } from '@/shared/constants/supportedTokens';
 import { invariant } from '@/shared/lib/react';
 import type { Address } from '@/shared/lib/zod';
 
 export type TokenDetails = {
     chainId: SupportedChainsId;
-    name?: string;
-    symbol?: string;
+    name: string;
+    symbol: string;
+    logo?: string;
     price: number;
-    tokenBalance?: string;
+    tokenBalance: string;
     usdBalance: number;
 };
 
