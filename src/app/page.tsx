@@ -1,5 +1,6 @@
 import { ConnectWallet } from '@/features/auth/ui/ConnectWallet';
 
+
 function App() {
     return (
         <div className="m-auto grid w-[350px] gap-y-2 rounded border border-gray-10 p-4 text-center">

@@ -6,10 +6,15 @@ import { Logo } from '@/shared/ui/Logo';
 import { DashboardNavigationPanel } from './ui/DashboardNavigationPanel';
 import { DashboardProvider } from './ui/DashboardProvider';
 
-
 export const metadata: Metadata = {
     title: 'Rage trade',
     description: 'Rage Trade | Technical Task',
+    icons: {
+        icon: {
+            type: 'image/svg+xml',
+            url: '/favicon.svg',
+        },
+    },
 };
 
 export default function Layout({ children }: { children: ReactNode }) {

@@ -9,6 +9,12 @@ import { getConfig } from './wagmi.config';
 export const metadata: Metadata = {
     title: 'Rage trade TT',
     description: 'Rage Trade | Technical Task',
+    icons: {
+        icon: {
+            type: 'image/svg+xml',
+            url: '/favicon.svg',
+        },
+    },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
