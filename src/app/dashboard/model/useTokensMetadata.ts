@@ -39,7 +39,7 @@ export const useTokensMetadata = (chainIds: SupportedChainsId[]) => {
     useEffect(() => {
         const getCachedData = async () => {
             const cachedTokensMetadata =
-                await tokensMetadataLocalStore.getItem('tokenMetadata');
+                await tokensMetadataLocalStore?.getItem('tokenMetadata');
             setCachedState({ isCacheLoaded: true, cachedTokensMetadata });
         };
         getCachedData();
@@ -69,7 +69,7 @@ export const useTokensMetadata = (chainIds: SupportedChainsId[]) => {
             queriesData.length &&
             queriesData.every((result) => !result.isFetching)
         ) {
-            tokensMetadataLocalStore.setItem('tokenMetadata', tokensMetadata);
+            tokensMetadataLocalStore?.setItem('tokenMetadata', tokensMetadata);
         }
     }, [queriesData]);
 

@@ -27,9 +27,9 @@ const TokensMetadataLocalStore = z.object({
 export type TokensMetadataLocalStore = z.infer<typeof TokensMetadataLocalStore>;
 
 export const tokensMetadataLocalStore =
-    typeof window !== 'undefined' &&
+    typeof window !== 'undefined' ?
     new LocalForageStore({
         name: 'Tokens Metadata',
         description: 'Store metadata for Tokens',
         schema: TokensMetadataLocalStore,
-    });
+    }) : undefined;
