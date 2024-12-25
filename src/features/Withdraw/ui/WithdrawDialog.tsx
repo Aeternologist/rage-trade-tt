@@ -2,7 +2,12 @@
 
 import { useState, type ReactNode } from 'react';
 import { erc20Abi, parseEther, parseUnits } from 'viem';
-import { useAccount, useSendTransaction, useWriteContract } from 'wagmi';
+import {
+    useAccount,
+    useSendTransaction,
+    useSwitchChain,
+    useWriteContract,
+} from 'wagmi';
 import { useAccountTokensContext } from '@/widgets/AccountInfo';
 import type { TokenDetails } from '@/widgets/AccountInfo/model/context';
 import {
@@ -53,10 +58,13 @@ const renderTokenItems = (
 
 export const WithdrawDialog = ({
     defaultTokenAddr,
+    defaultChainId,
     children,
+    onClick,
     ...props
 }: {
     defaultTokenAddr?: Address;
+    defaultChainId?: SupportedChainsId;
     children?: ReactNode;
 } & ButtonProps) => {
     const { tokenDetails, tokenDetailByAddress } = useAccountTokensContext();
@@ -65,6 +73,7 @@ export const WithdrawDialog = ({
     const [tokenAddr, setTokenAddr] = useState(defaultTokenAddr);
     const { writeContract } = useWriteContract();
     const { sendTransaction } = useSendTransaction();
+    const { switchChain } = useSwitchChain();
 
     const currentToken =
         chainId && tokenAddr
@@ -72,8 +81,16 @@ export const WithdrawDialog = ({
             : undefined;
 
     return (
-        <Dialog disabled={isConnecting} buttonText={children} {...props}>
-            <DialogCloseButton/>
+        <Dialog
+            disabled={isConnecting}
+            buttonText={children}
+            onClick={() => {
+                if (defaultChainId && chainId && defaultChainId !== chainId)
+                    switchChain({ chainId: defaultChainId });
+            }}
+            {...props}
+        >
+            <DialogCloseButton />
             <DialogForm
                 className="w-[437px] gap-y-4"
                 onSubmit={(e) => {

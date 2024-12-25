@@ -20,7 +20,7 @@ export const AccountInfo = () => {
         <SwitchNetwork> Switch network</SwitchNetwork>
     ) : (
         <Profile balance={`$${totalBalance}`.replace('.', ',')} compact>
-            <ConnectWallet className='!text-xxs font-normal hover:bg-transparent text-brand-0 p-0 bg-transparent underline'>Switch</ConnectWallet>
+            <ConnectWallet className='!text-xxs font-normal hover:bg-transparent text-brand-0 p-0 bg-transparent underline focus-visible:!outline-none focus-visible:border-0'>Switch</ConnectWallet>
         </Profile>
     );
 };

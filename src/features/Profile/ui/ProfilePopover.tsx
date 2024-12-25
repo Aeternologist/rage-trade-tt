@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Copy } from 'solar-icon-set';
 import { useAccount, useDisconnect, useSwitchAccount } from 'wagmi';
+import { cn } from '@/shared/lib/css';
 import { IconButton } from '@/shared/ui/IconButton';
 import { WalletIcon } from '@/shared/ui/WalletIcon';
 
@@ -15,7 +16,12 @@ export const ProfilePopover = ({
     const { connector, address } = useAccount();
     return (
         <section
-            className="absolute inset-auto right-1 top-1 m-0 w-[300px] grid-cols-2 grid-rows-2 items-center justify-items-end rounded border border-gray-10 bg-gray-9 p-4 popover-open:grid"
+            className={cn(
+                'absolute inset-auto right-1 top-1 m-0 w-[300px] grid-cols-2 grid-rows-2 items-center justify-items-end rounded border border-gray-10 bg-gray-9 p-4 popover-open:grid',
+                'opacity-0 transition-[opacity,overlay,display,transform] duration-500 transition-discrete popover-open:opacity-100 starting:opacity-0 starting:popover-open:opacity-0',
+                'translate-y-14 popover-open:translate-y-0 starting:-translate-y-14 starting:popover-open:-translate-y-14',
+                'backdrop:bg-black/30 backdrop:opacity-0 backdrop:backdrop-blur-[7.5px] backdrop:duration-500 popover-open:backdrop:opacity-100 starting:backdrop:opacity-0 starting:popover-open:backdrop:opacity-0',
+            )}
             id="walletInfo"
             popover=""
         >

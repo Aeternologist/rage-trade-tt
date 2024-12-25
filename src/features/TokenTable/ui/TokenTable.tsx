@@ -1,5 +1,7 @@
 import type { TokenDetails } from '@/widgets/AccountInfo/model/context';
+import type { SupportedChainsId } from '@/shared/constants/supportedTokens';
 import { addThousandSeparators, formatBalance } from '@/shared/lib/react';
+import type { Address } from '@/shared/lib/zod';
 import { AssetIcon } from '@/shared/ui/AssetIcon';
 import { NetworkIcon } from '@/shared/ui/NetworkIcon';
 import {
@@ -13,8 +15,10 @@ import {
 
 export const TokenTable = ({
     tokenDetails,
+    children,
 }: {
     tokenDetails: TokenDetails[];
+    children: (tokenAddr: Address, chainId: SupportedChainsId) => JSX.Element;
 }) => {
     return (
         <Table>
@@ -56,7 +60,9 @@ export const TokenTable = ({
                         <TableCell className="text-xs font-semibold">
                             ${addThousandSeparators(token.price)}
                         </TableCell>
-                        <TableCell className="text-right">Withdraw</TableCell>
+                        <TableCell className="text-right">
+                            {children(token.address, token.chainId)}
+                        </TableCell>
                     </TableRow>
                 ))}
             </TableBody>

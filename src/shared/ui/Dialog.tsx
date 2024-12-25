@@ -26,7 +26,7 @@ const DialogContainer = forwardRef<
         <dialog
             ref={ref}
             className={cn(
-                'open:scale-y-1 overflow-visible rounded border-0.5 border-gray-10 bg-gray-13/90',
+                'overflow-visible rounded border-0.5 border-gray-10 bg-gray-13/90',
                 'opacity-0 transition-[opacity,overlay,display,transform] duration-500 transition-discrete open:opacity-100 starting:opacity-0 starting:open:opacity-0',
                 '-translate-y-14 open:translate-y-0 starting:translate-y-14 starting:open:translate-y-14',
                 'backdrop:bg-black/30 backdrop:opacity-0 backdrop:backdrop-blur-[7.5px] backdrop:duration-500 open:backdrop:opacity-100 starting:backdrop:opacity-0 starting:open:backdrop:opacity-0',
@@ -48,9 +48,18 @@ DialogContainer.displayName = 'DialogContainer';
 
 const DialogTrigger = ({
     openDialog,
+    onClick,
     ...props
-}: { openDialog: () => void } & ButtonProps) => {
-    return <Button {...props} onClick={openDialog} />;
+}: { openDialog: () => void; onClick?: () => void } & ButtonProps) => {
+    return (
+        <Button
+            {...props}
+            onClick={() => {
+                onClick?.();
+                openDialog();
+            }}
+        />
+    );
 };
 
 const DialogForm = ({
