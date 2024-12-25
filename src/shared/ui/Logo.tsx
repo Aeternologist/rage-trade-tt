@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 const LogoIcon = ({ className }: { className?: string }) => {
     return (
         <svg
@@ -201,9 +203,9 @@ const WordmarkIcon = ({ className }: { className?: string }) => {
 
 export const Logo = () => {
     return (
-        <figure className="inline-flex items-center gap-x-2.5">
+        <Link href="/" className="inline-flex items-center gap-x-2.5">
             <LogoIcon />
             <WordmarkIcon />
-        </figure>
+        </Link>
     );
 };
