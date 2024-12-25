@@ -18,7 +18,7 @@ export const TokenTable = ({
     children,
 }: {
     tokenDetails: TokenDetails[] | HyperliquidDetails[];
-    children: (tokenAddr: Address, chainId: SupportedChainsId) => JSX.Element;
+    children?: (tokenAddr: Address, chainId: SupportedChainsId) => JSX.Element;
 }) => {
     return (
         <Table>
@@ -64,7 +64,7 @@ export const TokenTable = ({
                         </TableCell>
                         {token.chainId && (
                             <TableCell className="text-right">
-                                {children(token.address, token.chainId)}
+                                {children?.(token.address, token.chainId)}
                             </TableCell>
                         )}
                     </TableRow>
