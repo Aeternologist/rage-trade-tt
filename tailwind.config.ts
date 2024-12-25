@@ -69,6 +69,8 @@ const config = {
         require('tailwindcss-animate'),
         plugin(function ({ addVariant, addUtilities }: PluginAPI) {
             addVariant('popover-open', '&:popover-open');
+            addVariant('parent-popover-open', '[popover]:popover-open & ');
+            addVariant('parent-dialog-open', 'dialog:open & ');
             addVariant('starting', '@starting-style');
             addUtilities({
                 '.transition-discrete': {

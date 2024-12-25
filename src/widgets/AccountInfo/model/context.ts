@@ -10,9 +10,11 @@ import { invariant } from '@/shared/lib/react';
 import type { Address } from '@/shared/lib/zod';
 
 export type TokenDetails = {
+    address: Address;
     chainId: SupportedChainsId;
     name: string;
     symbol: string;
+    decimals: number;
     logo?: string;
     price: number;
     tokenBalance: string;
@@ -20,6 +22,10 @@ export type TokenDetails = {
 };
 
 type AccountTokensContext = {
+    tokenDetailByAddress: Record<
+        SupportedChainsId,
+        Record<Address, TokenDetails>
+    >;
     tokenDetails: TokenDetails[];
     totalBalance: number;
 };

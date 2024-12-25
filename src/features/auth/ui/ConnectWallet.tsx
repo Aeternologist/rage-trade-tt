@@ -1,32 +1,20 @@
 'use client';
 
-import { useRef } from 'react';
 import { useAccount, useConnect } from 'wagmi';
 import { Button, type ButtonProps } from '@/shared/ui/Button';
-import { Dialog } from '@/shared/ui/Dialog';
+import { Dialog, DialogCloseButton, DialogForm } from '@/shared/ui/Dialog';
 import { ConnectorButton } from './ConnectorButton';
 import { useSignIn } from './useSignIn';
 
-
 export const ConnectWallet = (props: ButtonProps) => {
-    const { connectors, connectAsync, status, error } = useConnect();
+    const { connectors, connectAsync, isPending, error } = useConnect();
     const account = useAccount();
-    const dialogRef = useRef<HTMLDialogElement>(null);
-    const openModal = () => {
-        dialogRef.current?.showModal();
-    };
     const signIn = useSignIn();
 
-
-
     return (
-        <>
-            <Button
-                {...props}
-                onClick={openModal}
-                disabled={status === 'pending'}
-            />
-            <Dialog ref={dialogRef}>
+        <Dialog {...props} disabled={isPending}>
+            <DialogCloseButton/>
+            <DialogForm>
                 <h2 className="mb-4 font-semibold text-primary">
                     Connect Your Wallet
                 </h2>
@@ -51,7 +39,7 @@ export const ConnectWallet = (props: ButtonProps) => {
                             </li>
                         ))}
                 </menu>
-            </Dialog>
-        </>
+            </DialogForm>
+        </Dialog>
     );
 };

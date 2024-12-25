@@ -1,6 +1,7 @@
 import type { TokenDetails } from '@/widgets/AccountInfo/model/context';
 import { addThousandSeparators, formatBalance } from '@/shared/lib/react';
 import { AssetIcon } from '@/shared/ui/AssetIcon';
+import { NetworkIcon } from '@/shared/ui/NetworkIcon';
 import {
     Table,
     TableBody,
@@ -28,12 +29,17 @@ export const TokenTable = ({
                 {tokenDetails.map((token) => (
                     <TableRow key={`${token.chainId}-${token.symbol}`}>
                         <TableCell className="grid grid-cols-[min-content_1fr] grid-rows-2 items-center gap-x-3 font-semibold">
-                            <AssetIcon
-                                className="row-span-full"
-                                symbol={token.symbol}
-                                logo={token.logo}
-                                chainId={token.chainId}
-                            />
+                            <div className="relative row-span-full w-7">
+                                <AssetIcon
+                                    symbol={token.symbol}
+                                    logo={token.logo}
+                                />
+                                <NetworkIcon
+                                    chainId={token.chainId}
+                                    className="absolute bottom-0 right-0 rounded-full"
+                                    size={12}
+                                />
+                            </div>
                             {token.symbol}
                             <span className="text-xxs font-normal text-secondary">
                                 {token.name}

@@ -1,29 +1,20 @@
 'use client';
 
-import { useRef } from 'react';
 import { useAccount, useSwitchChain } from 'wagmi';
 import { NetworkButton } from '@/entities/NetworkButton';
-import { Button, type ButtonProps } from '@/shared/ui/Button';
-import { Dialog } from '@/shared/ui/Dialog';
+import type { ButtonProps } from '@/shared/ui/Button';
+import { Dialog, DialogCloseButton, DialogForm } from '@/shared/ui/Dialog';
 import { useSignIn } from './useSignIn';
 
 export const SwitchNetwork = (props: ButtonProps) => {
     const { chainId, address } = useAccount();
-    const { chains, switchChainAsync, status } = useSwitchChain();
-    const dialogRef = useRef<HTMLDialogElement>(null);
-    const openModal = () => {
-        dialogRef.current?.showModal();
-    };
+    const { chains, switchChainAsync, isPending } = useSwitchChain();
     const signIn = useSignIn();
 
     return (
-        <>
-            <Button
-                {...props}
-                onClick={openModal}
-                disabled={status === 'pending'}
-            />
-            <Dialog ref={dialogRef}>
+        <Dialog disabled={isPending} {...props}>
+            <DialogCloseButton />
+            <DialogForm>
                 <h2 className="mb-4 font-semibold text-primary">
                     Switch network
                 </h2>
@@ -43,7 +34,7 @@ export const SwitchNetwork = (props: ButtonProps) => {
                         </li>
                     ))}
                 </menu>
-            </Dialog>
-        </>
+            </DialogForm>
+        </Dialog>
     );
 };

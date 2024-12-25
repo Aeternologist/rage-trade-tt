@@ -11,6 +11,7 @@ import type { TokenMetadataKey } from '@/entities/TokenDetails/model/localStore'
 import { getTokenMetadataQuery } from '@/entities/TokenDetails/model/queries';
 import type { SupportedChainsId } from '@/shared/constants/supportedTokens';
 import { formatBalance } from '@/shared/lib/react';
+import type { Address } from '@/shared/lib/zod';
 import { useNativeCurrencyDetails } from '../model/useNativeCurrencyDetails';
 import { useReadSupportedContracts } from '../model/useReadSupportedContracts';
 import { useTokensMetadata } from '../model/useTokensMetadata';
@@ -30,14 +31,21 @@ export const DashboardProvider = ({ children }: { children: ReactNode }) => {
 
     const tokenPricesByChainId = useTokensPrice(chainIds);
 
-    const { nativeCurrencyDetails, nativeCurrencyTotalUsdBalance } =
-        useNativeCurrencyDetails(
-            chains as Register['config']['chains'],
-            address,
-        );
+    const {
+        nativeCurrencyDetails,
+        nativeCurrencyDetailByAddress,
+        nativeCurrencyTotalUsdBalance,
+    } = useNativeCurrencyDetails(
+        chains as Register['config']['chains'],
+        address,
+    );
 
     const accountBalancesInfo = accountTokensData?.reduce<{
         tokenDetails: TokenDetails[];
+        tokenDetailByAddress: Record<
+            SupportedChainsId,
+            Record<Address, TokenDetails>
+        >;
         totalBalance: number;
     }>(
         (acc, token) => {
@@ -52,10 +60,12 @@ export const DashboardProvider = ({ children }: { children: ReactNode }) => {
                 `${token.chainId}-${token.address}` satisfies TokenMetadataKey;
             const tokenMetadata = tokensMetadata[tokenMetadataKey];
 
-            acc.tokenDetails.push({
+            const tokenDetails = {
+                address: token.address,
                 chainId: token.chainId,
                 name: tokenMetadata?.name || '',
                 symbol: tokenMetadata?.symbol || '',
+                decimals: tokenMetadata?.decimals || 18,
                 logo:
                     tokenMetadata?.logo ||
                     getLogoBySymbol(tokenMetadata?.symbol),
@@ -65,12 +75,17 @@ export const DashboardProvider = ({ children }: { children: ReactNode }) => {
                     tokenMetadata?.decimals || 18,
                 ),
                 usdBalance: usdBalance || 0,
-            });
+            };
+
+            acc.tokenDetails.push(tokenDetails);
+            acc.tokenDetailByAddress[token.chainId][token.address] =
+                tokenDetails;
             acc.totalBalance += usdBalance;
             return acc;
         },
         {
             tokenDetails: nativeCurrencyDetails,
+            tokenDetailByAddress: nativeCurrencyDetailByAddress,
             totalBalance: nativeCurrencyTotalUsdBalance,
         },
     );
@@ -79,16 +94,20 @@ export const DashboardProvider = ({ children }: { children: ReactNode }) => {
         isDisconnected && router.push('/auth');
     }, [isDisconnected]);
 
-    return accountBalancesInfo ? (
+    return (
         <AccountTokensContextProvider
             value={{
-                tokenDetails: accountBalancesInfo.tokenDetails,
-                totalBalance: accountBalancesInfo.totalBalance,
+                tokenDetails: accountBalancesInfo?.tokenDetails || [],
+                tokenDetailByAddress:
+                    accountBalancesInfo?.tokenDetailByAddress || {
+                        '1': {},
+                        '10': {},
+                        '42161': {},
+                    },
+                totalBalance: accountBalancesInfo?.totalBalance || 0,
             }}
         >
             {children}
         </AccountTokensContextProvider>
-    ) : (
-        <span>Loading...</span>
     );
 };

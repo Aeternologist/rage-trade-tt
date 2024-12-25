@@ -1,8 +1,4 @@
-import {
-    erc20Abi,
-    type ReadContractParameters,
-    type RequiredBy,
-} from 'viem';
+import { erc20Abi, type ReadContractParameters, type RequiredBy } from 'viem';
 import type { Register } from 'wagmi';
 import { arbitrum, mainnet, optimism, polygon } from 'wagmi/chains';
 import { z } from 'zod';
@@ -156,3 +152,6 @@ export const SUPPORTED_ADDRESSES_SET = Object.values(
     contracts.forEach((contract) => acc.add(contract.address as Address));
     return acc;
 }, new Set<Address>());
+
+export const NATIVE_ASSET_ADDRESS =
+    '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' as const satisfies Address;

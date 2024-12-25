@@ -5,7 +5,17 @@
  */
 const nextConfig = {
     reactStrictMode: true,
-     trailingSlash: true,
+    trailingSlash: true,
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'static.alchemyapi.io',
+                port: '',
+                pathname: '**',
+            },
+        ],
+    },
     webpack: (config) => {
         config.externals.push('pino-pretty', 'lokijs', 'encoding');
         return config;

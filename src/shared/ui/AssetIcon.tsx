@@ -8,42 +8,32 @@ import { cn } from '../lib/css';
 export const AssetIcon = ({
     symbol,
     logo,
-    chainId,
+    size,
     className,
 }: {
     symbol: string;
     logo?: string;
-    chainId: SupportedChainsId;
+    size?: number;
     className?: string;
 }) => {
-    const NetworkIcon = NETWORK_ICON_BY_ID[chainId];
     const DefaultTokenIcon = TOKEN_ICON_BY_SYM[symbol];
     const FallBackTokenIcon = TextCircle;
-    
-    const tokenIcon = logo ? (
+
+    return logo ? (
         <Image
+            width={size || 24}
+            height={size || 24}
             src={logo}
             alt={symbol}
-            className={cn('rounded-full', className)}
+            className={cn('rounded-full h-full', className)}
         />
     ) : DefaultTokenIcon ? (
         <DefaultTokenIcon className={cn('rounded-full', className)} />
     ) : (
         <FallBackTokenIcon
             className={cn(className)}
-            size={24}
+            size={size || 24}
             iconStyle="BoldDuotone"
         />
-    );
-
-    return (
-        <div className={cn('relative w-7', className)}>
-            {tokenIcon}
-            <NetworkIcon
-                className="absolute bottom-0 right-0 rounded-full"
-                width={12}
-                height={12}
-            />
-        </div>
     );
 };

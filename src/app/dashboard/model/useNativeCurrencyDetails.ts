@@ -8,7 +8,11 @@ import {
     getTokensPriceByIdsQuery,
 } from '@/entities/TokenDetails';
 import type { TokenId } from '@/shared/api';
-import { NATIVE_CURRENCY_COINGECKO_ID } from '@/shared/constants/supportedTokens';
+import {
+    NATIVE_ASSET_ADDRESS,
+    NATIVE_CURRENCY_COINGECKO_ID,
+    type SupportedChainsId,
+} from '@/shared/constants/supportedTokens';
 import type { Address } from '@/shared/lib/zod';
 import { formatBalance } from './../../../shared/lib/react';
 
@@ -37,10 +41,7 @@ export const useNativeCurrencyDetails = (
         (acc, { data }, index) => {
             const chainId = chains[index].id;
             // if chain is arbitrum
-            const currencyInfo =
-                chainId === 42161
-                    ? { name: 'Arbitrum', symbol: 'ARB', decimals: 18 }
-                    : chains[index].nativeCurrency;
+            const currencyInfo = chains[index].nativeCurrency;
             const currencyId = NATIVE_CURRENCY_COINGECKO_ID[chainId];
             const currencyBalance = formatUnits(
                 BigInt(data || '0x0'),
@@ -51,9 +52,11 @@ export const useNativeCurrencyDetails = (
                 nativeCurrencyPrices?.[currencyId as TokenId]?.usd || 0;
 
             const currencyDetails = {
+                address: NATIVE_ASSET_ADDRESS,
                 chainId: chainId,
                 name: currencyInfo.name,
                 symbol: currencyInfo.symbol,
+                decimals: currencyInfo.decimals,
                 price: formatBalance(currencyPrice || 0, 2),
                 tokenBalance: currencyBalance,
                 usdBalance: formatBalance(
@@ -64,12 +67,20 @@ export const useNativeCurrencyDetails = (
 
             acc.nativeCurrencyDetails.push(currencyDetails);
 
+            acc.nativeCurrencyDetailByAddress[chainId][NATIVE_ASSET_ADDRESS] =
+                currencyDetails;
+
             acc.nativeCurrencyTotalUsdBalance += currencyDetails.usdBalance;
 
             return acc;
         },
         {
             nativeCurrencyDetails: new Array<TokenDetails>(),
+            nativeCurrencyDetailByAddress: {
+                '1': {},
+                '10': {},
+                '42161': {},
+            } as Record<SupportedChainsId, Record<Address, TokenDetails>>,
             nativeCurrencyTotalUsdBalance: 0,
         },
     );
