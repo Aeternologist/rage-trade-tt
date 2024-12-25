@@ -26,7 +26,7 @@ function Dashboard() {
     const { connector } = useAccount();
     const walletAllocation = Math.round((walletBalance * 100) / totalBalance);
     const hyperliquidAllocation = 100 - walletAllocation;
-    throw new Error('kek')
+
     return (
         <Table>
             <TableHeader>
