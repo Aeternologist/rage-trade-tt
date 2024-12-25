@@ -40,7 +40,6 @@ export const useTokensMetadata = (chainIds: SupportedChainsId[]) => {
         const getCachedData = async () => {
             const cachedTokensMetadata =
                 await tokensMetadataLocalStore.getItem('tokenMetadata');
-            console.log(cachedTokensMetadata);
             setCachedState({ isCacheLoaded: true, cachedTokensMetadata });
         };
         getCachedData();

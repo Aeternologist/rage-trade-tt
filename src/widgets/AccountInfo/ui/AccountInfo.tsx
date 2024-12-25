@@ -19,6 +19,8 @@ export const AccountInfo = () => {
     return isWrongChain ? (
         <SwitchNetwork> Switch network</SwitchNetwork>
     ) : (
-        <Profile compact>{`$${totalBalance}`.replace('.', ',')}</Profile>
+        <Profile balance={`$${totalBalance}`.replace('.', ',')} compact>
+            <ConnectWallet className='!text-xxs font-normal hover:bg-transparent text-brand-0 p-0 bg-transparent underline'>Switch</ConnectWallet>
+        </Profile>
     );
 };

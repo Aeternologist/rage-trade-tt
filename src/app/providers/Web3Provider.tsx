@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 import { type ReactNode, useState } from 'react';
 import { type State, WagmiProvider } from 'wagmi';
 import { getConfig } from '../wagmi.config';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 export function Web3Provider(props: {
     children: ReactNode;
@@ -27,6 +28,7 @@ export function Web3Provider(props: {
         <WagmiProvider config={config} initialState={props.initialState}>
             <QueryClientProvider client={queryClient}>
                 {props.children}
+                <ReactQueryDevtools initialIsOpen={false} />
             </QueryClientProvider>
         </WagmiProvider>
     );

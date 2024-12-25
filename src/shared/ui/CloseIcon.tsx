@@ -19,14 +19,14 @@ export const CloseIcon = ({
                 d="M12 4L4 12"
                 stroke="currentColor"
                 strokeWidth="1.5"
-                stroke-linecap="round"
+                strokeLinecap="round"
                 strokeLinejoin="round"
             />
             <path
                 d="M4 4L12 12"
                 stroke="currentColor"
                 strokeWidth="1.5"
-                stroke-linecap="round"
+                strokeLinecap="round"
                 strokeLinejoin="round"
             />
         </svg>

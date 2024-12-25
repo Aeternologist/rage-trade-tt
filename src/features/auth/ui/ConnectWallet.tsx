@@ -6,14 +6,14 @@ import { Dialog, DialogCloseButton, DialogForm } from '@/shared/ui/Dialog';
 import { ConnectorButton } from './ConnectorButton';
 import { useSignIn } from './useSignIn';
 
-export const ConnectWallet = (props: ButtonProps) => {
+export const ConnectWallet = ({ children, ...props }: ButtonProps) => {
     const { connectors, connectAsync, isPending, error } = useConnect();
     const account = useAccount();
     const signIn = useSignIn();
 
     return (
-        <Dialog {...props} disabled={isPending}>
-            <DialogCloseButton/>
+        <Dialog buttonText={children} {...props} disabled={isPending}>
+            <DialogCloseButton />
             <DialogForm>
                 <h2 className="mb-4 font-semibold text-primary">
                     Connect Your Wallet
@@ -28,7 +28,7 @@ export const ConnectWallet = (props: ButtonProps) => {
                                     connected={
                                         connector.uid === account.connector?.uid
                                     }
-                                    disabled={status === 'pending'}
+                                    disabled={isPending}
                                     onClick={() =>
                                         connectAsync({ connector }).then(
                                             ({ chainId, accounts }) =>
