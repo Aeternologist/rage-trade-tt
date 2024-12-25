@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { cn } from '@/shared/lib/css';
 
-
 const Table = React.forwardRef<
     HTMLTableElement,
     React.HTMLAttributes<HTMLTableElement>
@@ -20,7 +19,11 @@ const TableHeader = React.forwardRef<
     HTMLTableSectionElement,
     React.HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
-    <thead ref={ref} className={cn('[&_tr]:border-b border-gray-9', className)} {...props} />
+    <thead
+        ref={ref}
+        className={cn('border-gray-9 [&_tr]:border-b', className)}
+        {...props}
+    />
 ));
 TableHeader.displayName = 'TableHeader';
 
@@ -70,7 +73,7 @@ const TableHead = React.forwardRef<
     <th
         ref={ref}
         className={cn(
-            'h-10 border-gray-9 px-4 py-2 first-of-type:text-left align-middle font-semibold text-xs text-[hsl(234,_24%,_65%)] [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
+            'h-10 border-gray-9 px-4 py-2 text-left align-middle text-xs font-semibold text-[hsl(234,_24%,_65%)] [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
             className,
         )}
         {...props}
@@ -85,7 +88,7 @@ const TableCell = React.forwardRef<
     <td
         ref={ref}
         className={cn(
-            'border-gray-9 px-4 py-2 align-middle text-center text-primary first-of-type:text-left [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
+            'border-gray-9 px-4 py-2 text-left align-middle text-primary [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
             className,
         )}
         {...props}
@@ -97,11 +100,7 @@ const TableCaption = React.forwardRef<
     HTMLTableCaptionElement,
     React.HTMLAttributes<HTMLTableCaptionElement>
 >(({ className, ...props }, ref) => (
-    <caption
-        ref={ref}
-        className={cn('mt-4 text-sm', className)}
-        {...props}
-    />
+    <caption ref={ref} className={cn('mt-4 text-sm', className)} {...props} />
 ));
 TableCaption.displayName = 'TableCaption';
 

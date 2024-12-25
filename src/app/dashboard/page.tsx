@@ -9,6 +9,7 @@ import {
     EthereumNetworkIcon,
     OptimismNetworkIcon,
 } from '@/shared/ui/NetworkIcons';
+import { HyperliquidIcon } from '@/shared/ui/TokenIcons';
 import { WalletIcon } from '@/shared/ui/WalletIcon';
 import {
     Table,
@@ -20,8 +21,11 @@ import {
 } from '@/shared/ui/shadcn/table';
 
 function Dashboard() {
-    const { tokenDetails, totalBalance } = useAccountTokensContext();
+    const { walletBalance, hyperliquidBalance, totalBalance } =
+        useAccountTokensContext();
     const { connector } = useAccount();
+    const walletAllocation = Math.round((walletBalance * 100) / totalBalance);
+    const hyperliquidAllocation = 100 - walletAllocation;
     return (
         <Table>
             <TableHeader>
@@ -44,19 +48,19 @@ function Dashboard() {
                     </TableCell>
                     <TableCell className="text-xs font-semibold">
                         <span className="bg-quaternary/15 inline-flex items-center justify-center rounded-lg px-2 py-1 text-primary">
-                            20%
+                            {walletAllocation}%
                         </span>
                     </TableCell>
-                    <TableCell className="flex flex-wrap place-content-center gap-x-1">
+                    <TableCell className="flex flex-wrap justify-start gap-x-1">
                         <OptimismNetworkIcon />
                         <ArbitrumNetworkIcon />
                         <EthereumNetworkIcon />
                     </TableCell>
                     <TableCell>
-                        <div className="grid place-items-start justify-center text-xs font-semibold text-primary">
-                            ${addThousandSeparators(totalBalance)} USDC
+                        <div className="grid place-items-start justify-start text-xs font-semibold text-primary">
+                            ${addThousandSeparators(walletBalance)} USDC
                             <span className="text-xxs font-semibold text-secondary">
-                                ${addThousandSeparators(totalBalance)}
+                                ${addThousandSeparators(walletBalance)}
                             </span>
                         </div>
                     </TableCell>
@@ -68,6 +72,28 @@ function Dashboard() {
                         >
                             Withdraw
                         </WithdrawDialog>
+                    </TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell className="flex items-center gap-x-3 text-sm font-semibold text-primary">
+                        <HyperliquidIcon />
+                        Hyperliquid
+                    </TableCell>
+                    <TableCell className="text-xs font-semibold">
+                        <span className="bg-quaternary/15 inline-flex items-center justify-start rounded-lg px-2 py-1 text-primary">
+                            {hyperliquidAllocation}%
+                        </span>
+                    </TableCell>
+                    <TableCell className="flex flex-wrap place-content-start gap-x-1">
+                        <ArbitrumNetworkIcon />
+                    </TableCell>
+                    <TableCell>
+                        <div className="grid place-items-start justify-start text-xs font-semibold text-primary">
+                            ${addThousandSeparators(hyperliquidBalance)} USDC
+                            <span className="text-xxs font-semibold text-secondary">
+                                ${addThousandSeparators(hyperliquidBalance)}
+                            </span>
+                        </div>
                     </TableCell>
                 </TableRow>
             </TableBody>

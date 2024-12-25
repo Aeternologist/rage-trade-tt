@@ -1,8 +1,7 @@
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { formatUnits } from 'viem';
 import type { Register } from 'wagmi';
-import { symbol } from 'zod';
-import type { TokenDetails } from '@/widgets/AccountInfo/model/context';
+import type { TokenDetails } from '@/widgets/AccountInfo';
 import {
     getAccountBalancesQuery,
     getTokensPriceByIdsQuery,
@@ -13,8 +12,8 @@ import {
     NATIVE_CURRENCY_COINGECKO_ID,
     type SupportedChainsId,
 } from '@/shared/constants/supportedTokens';
+import { formatBalance } from '@/shared/lib/react';
 import type { Address } from '@/shared/lib/zod';
-import { formatBalance } from './../../../shared/lib/react';
 
 export const useNativeCurrencyDetails = (
     chains: Register['config']['chains'],

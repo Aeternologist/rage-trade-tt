@@ -1,4 +1,4 @@
-import type { TokenDetails } from '@/widgets/AccountInfo/model/context';
+import type { HyperliquidDetails, TokenDetails } from '@/widgets/AccountInfo';
 import type { SupportedChainsId } from '@/shared/constants/supportedTokens';
 import { addThousandSeparators, formatBalance } from '@/shared/lib/react';
 import type { Address } from '@/shared/lib/zod';
@@ -17,7 +17,7 @@ export const TokenTable = ({
     tokenDetails,
     children,
 }: {
-    tokenDetails: TokenDetails[];
+    tokenDetails: TokenDetails[] | HyperliquidDetails[];
     children: (tokenAddr: Address, chainId: SupportedChainsId) => JSX.Element;
 }) => {
     return (
@@ -31,18 +31,20 @@ export const TokenTable = ({
             </TableHeader>
             <TableBody>
                 {tokenDetails.map((token) => (
-                    <TableRow key={`${token.chainId}-${token.symbol}`}>
+                    <TableRow key={`${token.chainId}-${token.address}`}>
                         <TableCell className="grid grid-cols-[min-content_1fr] grid-rows-2 items-center gap-x-3 font-semibold">
                             <div className="relative row-span-full w-7">
                                 <AssetIcon
                                     symbol={token.symbol}
                                     logo={token.logo}
                                 />
-                                <NetworkIcon
-                                    chainId={token.chainId}
-                                    className="absolute bottom-0 right-0 rounded-full"
-                                    size={12}
-                                />
+                                {token.chainId && (
+                                    <NetworkIcon
+                                        chainId={token.chainId}
+                                        className="absolute bottom-0 right-0 rounded-full"
+                                        size={12}
+                                    />
+                                )}
                             </div>
                             {token.symbol}
                             <span className="text-xxs font-normal text-secondary">
@@ -60,9 +62,11 @@ export const TokenTable = ({
                         <TableCell className="text-xs font-semibold">
                             ${addThousandSeparators(token.price)}
                         </TableCell>
-                        <TableCell className="text-right">
-                            {children(token.address, token.chainId)}
-                        </TableCell>
+                        {token.chainId && (
+                            <TableCell className="text-right">
+                                {children(token.address, token.chainId)}
+                            </TableCell>
+                        )}
                     </TableRow>
                 ))}
             </TableBody>

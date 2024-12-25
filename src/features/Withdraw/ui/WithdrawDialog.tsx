@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, type ReactNode } from 'react';
-import { erc20Abi, parseEther, parseUnits } from 'viem';
+import { erc20Abi, numberToHex, parseEther, parseUnits } from 'viem';
 import {
     useAccount,
     useSendTransaction,
@@ -9,7 +9,7 @@ import {
     useWriteContract,
 } from 'wagmi';
 import { useAccountTokensContext } from '@/widgets/AccountInfo';
-import type { TokenDetails } from '@/widgets/AccountInfo/model/context';
+import type { TokenDetails } from '@/widgets/AccountInfo';
 import {
     NATIVE_ASSET_ADDRESS,
     type SupportedChainsId,
@@ -84,7 +84,7 @@ export const WithdrawDialog = ({
         <Dialog
             disabled={isConnecting}
             buttonText={children}
-            onClick={() => {
+            onBeforeOpenDialog={() => {
                 if (defaultChainId && chainId && defaultChainId !== chainId)
                     switchChain({ chainId: defaultChainId });
             }}

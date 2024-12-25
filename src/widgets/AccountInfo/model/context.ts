@@ -8,25 +8,18 @@ import {
 import type { SupportedChainsId } from '@/shared/constants/supportedTokens';
 import { invariant } from '@/shared/lib/react';
 import type { Address } from '@/shared/lib/zod';
-
-export type TokenDetails = {
-    address: Address;
-    chainId: SupportedChainsId;
-    name: string;
-    symbol: string;
-    decimals: number;
-    logo?: string;
-    price: number;
-    tokenBalance: string;
-    usdBalance: number;
-};
+import type { HyperliquidDetails, TokenDetails } from '../types';
 
 type AccountTokensContext = {
     tokenDetailByAddress: Record<
         SupportedChainsId,
         Record<Address, TokenDetails>
     >;
+    hyperliquidDetailBySymbol: Record<string, HyperliquidDetails>;
     tokenDetails: TokenDetails[];
+    hyperliquidDetails: HyperliquidDetails[];
+    walletBalance: number;
+    hyperliquidBalance: number;
     totalBalance: number;
 };
 

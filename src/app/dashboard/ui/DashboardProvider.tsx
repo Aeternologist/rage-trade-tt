@@ -1,17 +1,18 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect, type ReactNode } from 'react';
 import { formatUnits } from 'viem';
 import { useAccount, useChains, type Register } from 'wagmi';
-import { AccountTokensContextProvider } from '@/widgets/AccountInfo';
-import type { TokenDetails } from '@/widgets/AccountInfo/model/context';
+import {
+    AccountTokensContextProvider,
+    type TokenDetails,
+} from '@/widgets/AccountInfo';
 import type { TokenMetadataKey } from '@/entities/TokenDetails/model/localStore';
-import { getTokenMetadataQuery } from '@/entities/TokenDetails/model/queries';
 import type { SupportedChainsId } from '@/shared/constants/supportedTokens';
 import { formatBalance } from '@/shared/lib/react';
 import type { Address } from '@/shared/lib/zod';
+import { useHyperliquidDetails } from '../model/useHyperliquidDetails';
 import { useNativeCurrencyDetails } from '../model/useNativeCurrencyDetails';
 import { useReadSupportedContracts } from '../model/useReadSupportedContracts';
 import { useTokensMetadata } from '../model/useTokensMetadata';
@@ -46,19 +47,24 @@ export const DashboardProvider = ({ children }: { children: ReactNode }) => {
             SupportedChainsId,
             Record<Address, TokenDetails>
         >;
-        totalBalance: number;
+        walletBalance: number;
     }>(
         (acc, token) => {
-            const tokenPrice =
-                tokenPricesByChainId[token.chainId]?.[token.address]?.usd;
-
-            const usdBalance = tokenPrice
-                ? formatBalance(Number(token.tokenBalance) * tokenPrice, 2)
-                : 0;
-
             const tokenMetadataKey =
                 `${token.chainId}-${token.address}` satisfies TokenMetadataKey;
             const tokenMetadata = tokensMetadata[tokenMetadataKey];
+
+            const tokenPrice =
+                tokenPricesByChainId[token.chainId]?.[token.address]?.usd;
+
+            const tokenBalance = formatUnits(
+                token.tokenBalance,
+                tokenMetadata?.decimals || 18,
+            );
+
+            const usdBalance = tokenPrice
+                ? formatBalance(Number(tokenBalance) * tokenPrice, 2)
+                : 0;
 
             const tokenDetails = {
                 address: token.address,
@@ -70,25 +76,28 @@ export const DashboardProvider = ({ children }: { children: ReactNode }) => {
                     tokenMetadata?.logo ||
                     getLogoBySymbol(tokenMetadata?.symbol),
                 price: formatBalance(tokenPrice || 0, 2),
-                tokenBalance: formatUnits(
-                    token.tokenBalance,
-                    tokenMetadata?.decimals || 18,
-                ),
+                tokenBalance: tokenBalance,
                 usdBalance: usdBalance || 0,
             };
 
             acc.tokenDetails.push(tokenDetails);
             acc.tokenDetailByAddress[token.chainId][token.address] =
                 tokenDetails;
-            acc.totalBalance += usdBalance;
+            acc.walletBalance += usdBalance;
             return acc;
         },
         {
             tokenDetails: nativeCurrencyDetails,
             tokenDetailByAddress: nativeCurrencyDetailByAddress,
-            totalBalance: nativeCurrencyTotalUsdBalance,
+            walletBalance: nativeCurrencyTotalUsdBalance,
         },
     );
+
+    const {
+        hyperliquidDetails,
+        hyperliquidBalance,
+        hyperliquidDetailBySymbol,
+    } = useHyperliquidDetails(address!, getLogoBySymbol);
 
     useEffect(() => {
         isDisconnected && router.push('/auth');
@@ -97,14 +106,20 @@ export const DashboardProvider = ({ children }: { children: ReactNode }) => {
     return (
         <AccountTokensContextProvider
             value={{
-                tokenDetails: accountBalancesInfo?.tokenDetails || [],
                 tokenDetailByAddress:
                     accountBalancesInfo?.tokenDetailByAddress || {
                         '1': {},
                         '10': {},
                         '42161': {},
                     },
-                totalBalance: accountBalancesInfo?.totalBalance || 0,
+                hyperliquidDetailBySymbol,
+                tokenDetails: accountBalancesInfo?.tokenDetails || [],
+                hyperliquidDetails,
+                walletBalance: accountBalancesInfo?.walletBalance || 0,
+                hyperliquidBalance,
+                totalBalance:
+                    hyperliquidBalance +
+                    (accountBalancesInfo?.walletBalance || 0),
             }}
         >
             {children}

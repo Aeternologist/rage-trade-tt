@@ -4,21 +4,18 @@ import Image from 'next/image';
 import { useSelectedLayoutSegment } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { useAccount } from 'wagmi';
-import {
-    useAccountTokensContext,
-    NavigationPanel,
-    type NavigationPanelLink,
-} from '@/widgets/AccountInfo';
+import { useAccountTokensContext, NavigationPanel, type NavigationPanelLink } from '@/widgets/AccountInfo';
 import { addThousandSeparators } from '@/shared/lib/react';
 import { HyperliquidIcon } from '@/shared/ui/TokenIcons';
 import { DefaultWalletIcon } from '@/shared/ui/WalletIcons';
+
 
 export const DashboardNavigationPanel = ({
     children,
 }: {
     children?: ReactNode;
 }) => {
-    const { totalBalance } = useAccountTokensContext();
+    const { totalBalance, hyperliquidBalance, walletBalance } = useAccountTokensContext();
     const activeSegment = useSelectedLayoutSegment();
     const { connector } = useAccount();
 
@@ -41,13 +38,13 @@ export const DashboardNavigationPanel = ({
                 <DefaultWalletIcon />
             ),
             children: connector?.name,
-            suffix: `$${addThousandSeparators(totalBalance)}`,
+            suffix: `$${addThousandSeparators(walletBalance)}`,
         },
         {
             href: '/dashboard/hyperliquid-assets',
             prefix: <HyperliquidIcon />,
             children: 'Hyperliquid',
-            suffix: `$${addThousandSeparators(totalBalance)}`,
+            suffix: `$${addThousandSeparators(hyperliquidBalance)}`,
         },
     ] as const satisfies NavigationPanelLink[];
 

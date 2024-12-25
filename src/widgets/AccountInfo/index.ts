@@ -5,4 +5,8 @@ export {
     accountTokensContext,
 } from './model/context';
 export { NavigationPanel } from './ui/NavigationPanel';
-export type { NavigationPanelLink } from './types';
+export type {
+    NavigationPanelLink,
+    HyperliquidDetails,
+    TokenDetails,
+} from './types';

@@ -63,7 +63,7 @@ export const getAccountBalancesQuery = ({
     chainId: SupportedChainsId;
     accountAddr: Address;
 }) =>
-    ({
+    queryOptions({
         queryKey: [{ type: 'accountBalances', chainId, accountAddr }],
         queryFn: () =>
             getAccountBalances({
@@ -72,11 +72,7 @@ export const getAccountBalancesQuery = ({
             }),
         select: (data) => data.result,
         enabled: Boolean(chainId && accountAddr),
-    }) satisfies UseQueryOptions<
-        AccountBalanceSchema,
-        Error,
-        AccountBalanceSchema['result']
-    >;
+    });
 
 export const getTokenBalancesQuery = ({
     chainId,
@@ -85,7 +81,7 @@ export const getTokenBalancesQuery = ({
     chainId: SupportedChainsId;
     accountAddr: Address;
 }) =>
-    ({
+    queryOptions({
         queryKey: [{ type: 'tokenBalances', chainId, accountAddr }],
         queryFn: () =>
             getTokenBalances({
@@ -97,14 +93,10 @@ export const getTokenBalancesQuery = ({
             }),
         select: (data) => data.result.tokenBalances,
         enabled: Boolean(chainId && accountAddr),
-    }) satisfies UseQueryOptions<
-        TokenBalanceSchema,
-        Error,
-        TokenBalanceSchema['result']['tokenBalances']
-    >;
+    });
 
 export const getPlatformAssetsQuery = () =>
-    ({
+    queryOptions({
         queryKey: ['platformAssets'],
         queryFn: getPlatformAssets,
         staleTime: Infinity,
@@ -117,14 +109,10 @@ export const getPlatformAssetsQuery = () =>
                         asset.id);
                 return acc;
             }, {} as PlatformAssetNameById),
-    }) satisfies UseQueryOptions<
-        PlatformAssetsSchema,
-        Error,
-        PlatformAssetNameById
-    >;
+    });
 
 export const getTokenIdsQuery = () =>
-    ({
+    queryOptions({
         queryKey: ['tokenIds'],
         queryFn: getTokenIds,
         staleTime: Infinity,
@@ -141,11 +129,7 @@ export const getTokenIdsQuery = () =>
                 },
                 { tokenById: {}, tokenIds: new Array() },
             ),
-    }) satisfies UseQueryOptions<
-        TokensSchema,
-        Error,
-        { tokenById: TokenByAddress; tokenIds: TokenId[] }
-    >;
+    });
 
 export const getTokensPriceByAddressesQuery = ({
     addresses,
@@ -156,7 +140,7 @@ export const getTokensPriceByAddressesQuery = ({
     assetPlatformId: string | undefined;
     enabled?: boolean;
 }) =>
-    ({
+    queryOptions({
         queryKey: [
             Array.isArray(addresses)
                 ? addresses.map((address) => ({
@@ -172,14 +156,10 @@ export const getTokensPriceByAddressesQuery = ({
             }),
         staleTime: 1000 * 30,
         enabled: enabled,
-    }) satisfies UseQueryOptions<
-        TokenPriceByAddress,
-        Error,
-        TokenPriceByAddress
-    >;
+    });
 
 export const getTokensPriceByIdsQuery = (tokenIds: TokenId[] | TokenId) =>
-    ({
+    queryOptions({
         queryKey: [
             Array.isArray(tokenIds)
                 ? tokenIds.map((tokenId) => ({
@@ -191,8 +171,4 @@ export const getTokensPriceByIdsQuery = (tokenIds: TokenId[] | TokenId) =>
         queryFn: () => getTokenPriceByIds(tokenIds),
         staleTime: 1000 * 30,
         enabled: Boolean(tokenIds),
-    }) satisfies UseQueryOptions<
-        TokenPriceByIdSchema,
-        Error,
-        TokenPriceByIdSchema
-    >;
+    });

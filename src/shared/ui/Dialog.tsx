@@ -48,14 +48,17 @@ DialogContainer.displayName = 'DialogContainer';
 
 const DialogTrigger = ({
     openDialog,
-    onClick,
+    onBeforeOpenDialog,
     ...props
-}: { openDialog: () => void; onClick?: () => void } & ButtonProps) => {
+}: {
+    openDialog: () => void;
+    onBeforeOpenDialog?: () => void;
+} & ButtonProps) => {
     return (
         <Button
             {...props}
             onClick={() => {
-                onClick?.();
+                onBeforeOpenDialog?.();
                 openDialog();
             }}
         />
@@ -113,7 +116,7 @@ const Dialog = ({
     children: ReactNode;
     dialogClassName?: string;
     buttonText?: ReactNode;
-} & ButtonProps) => {
+} & ButtonProps & { onBeforeOpenDialog?: () => void }) => {
     const dialogRef = useRef<HTMLDialogElement>(null);
     const openDialog = () => {
         dialogRef.current?.showModal();
